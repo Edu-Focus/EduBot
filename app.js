@@ -47,5 +47,4 @@ bot.on ("message", message => {
     if(cmd === ("ping")){
         message.channel.send("pong")
     } 
-    console.log(cmd)
 });
