@@ -1,0 +1,26 @@
+{
+  "name": "edubot",
+  "version": "0.1.0-dev",
+  "description": "Bot Discord pour le serveur d'Edu-Focus",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edu-Focus/EduBot.git"
+  },
+  "author": "MaitreRouge",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Edu-Focus/EduBot/issues"
+  },
+  "homepage": "https://github.com/Edu-Focus/EduBot#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "fs": "0.0.1-security",
+    "lodash": "^4.17.14",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  }
+}
