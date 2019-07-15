@@ -45,7 +45,7 @@ bot.on ("message", message => {
     if(commandfile) commandfile.run(bot,message,args,id,name,key);
 
     if(cmd === ("ping")){
-        message.channel.send("Pong")
+        message.channel.send("pong")
     } 
     console.log(cmd)
 });
