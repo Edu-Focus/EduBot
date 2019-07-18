@@ -20,6 +20,7 @@
     "discord.js": "^11.5.1",
     "fs": "0.0.1-security",
     "lodash": "^4.17.14",
+    "package.json": "^2.0.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4"
   }

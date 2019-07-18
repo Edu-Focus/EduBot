@@ -3,14 +3,14 @@ const fs = require("fs");
 const bot = new Discord.Client();
 const config = require("./botconfig.json");
 bot.commands = new Discord.Collection();
-let prefix = ("Edu-Focus,");
+let prefix = ("EF!");
 
 fs.readdir("./commandes/", (err, files) => {
     if(err) console.log(err);
 
     let jsfile = files.filter(f => f.split(".").pop() === "js")
     if(jsfile.length <= 0){
-        console.log("Une erreur est survenue lors du chargement des fichiers de commande");
+        console.log("Les fichiers commandes n'ont pas été trouvés");
         return;
     }
 
@@ -27,7 +27,7 @@ const key = config.api_key
 bot.on("ready", async () => {
     console.log('index.js a bien été chargé')
     console.log(`${bot.user.username} est maintenant en ligne`);
-    bot.user.setGame("Edu-Focus, on a tous le droit d'apprendre")
+    bot.user.setGame("Edu-Focus, tout le monde a le droit d'apprendre !")
 });
 
 bot.on ("message", message => {
@@ -35,16 +35,13 @@ bot.on ("message", message => {
     if (message.channel.type === "dm") return
 
     let messageArray = message.content.split(" ");
-    let cmd = messageArray[1];
+    let cmd = messageArray[0];
     let args = messageArray.slice(1);
 
-    var id = message.author.id
-    var name = message.author.username
-    
-    let commandfile = bot.commands.get(cmd);
-    if(commandfile) commandfile.run(bot,message,args,id,name,key);
+    let commandfile = bot.commands.get(cmd.slice(prefix.length));
+    if(commandfile) commandfile.run(bot,message,args,key);
 
-    if(cmd === ("ping")){
-        message.channel.send("pong")
+    if(cmd === (prefix + "ping")){
+        message.channel.send("Pong")
     } 
 });
