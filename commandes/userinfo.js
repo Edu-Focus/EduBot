@@ -4,6 +4,7 @@ const request = require('request-promise');
 module.exports.run = async (bot, message, args, key) => {
 
     if(args[0]){
+        if(args[0] === 'système' || args[0] === 'Système' || args[0] === 'systeme' || args[0] === 'Systeme') return message.channel.send(':middle_finger:')
         var personn = args[0]
         var wait = message.channel.send("Demande d'informations au serveur d'Edu-Focus en cours")
         wait.then(function (message) {
@@ -15,7 +16,7 @@ module.exports.run = async (bot, message, args, key) => {
                 message.delete('1')
                 if(response){
                     if(response.status === "success"){
-                        console.log(response)
+                        //console.log(response)
                         switch(response.data.authorization_level) {
                             //message.channel.send()
                             case 0:
@@ -37,7 +38,8 @@ module.exports.run = async (bot, message, args, key) => {
                                       }
                                     ]
                                   })
-                                message.channel.send(embedd) 
+                                message.channel.send(embedd)
+                                break; 
                             case 1:
                                 if(response.data.informations.flags.is_assoc_member === true){
                                 var assos_member = ":white_check_mark: "
@@ -114,6 +116,7 @@ module.exports.run = async (bot, message, args, key) => {
                                     ]
                                   })
                                   message.channel.send(embedd)
+                                  break; 
                             case 2:
                                     if(response.data.informations.flags.is_assoc_member === true){
                                         var assos_member = ":white_check_mark: "
@@ -220,6 +223,7 @@ module.exports.run = async (bot, message, args, key) => {
                                             ]
                                           })
                                     message.channel.send(embedd)
+                                    break; 
                             case 3:
                                 if(response.data.informations.flags.is_assoc_member === true){
                                     var assos_member = ":white_check_mark: "
@@ -331,6 +335,7 @@ module.exports.run = async (bot, message, args, key) => {
                                     ]
                                     })
                             message.channel.send(embedd)
+                            break; 
                         }
                     }else{
                         if(response.message === "no user found"){
