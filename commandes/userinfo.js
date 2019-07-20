@@ -199,12 +199,12 @@ module.exports.run = async (bot, message, args, key) => {
                                               },
                                               {
                                                 "name": "Divers :",
-                                                "value": `Compte vérifié : ${verified}\nControl parental : ${control}\nID du parent : ${parent}\nCGU acceptés : ${cgu}`,
+                                                "value": `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nID du parent : ${parent}\nCGU acceptés : ${cgu}`,
                                                 "inline": true
                                               },
                                               {
                                                 "name": "Ecoles :",
-                                                "value": `${schools}`,
+                                                "value": `WIP`,
                                                 "inline": true
                                               },
                                               {
@@ -221,6 +221,116 @@ module.exports.run = async (bot, message, args, key) => {
                                           })
                                     message.channel.send(embedd)
                             case 3:
+                                if(response.data.informations.flags.is_assoc_member === true){
+                                    var assos_member = ":white_check_mark: "
+                                }else{
+                                    var assos_member = ":x:"
+                                }
+                                if(response.data.informations.flags.is_bug_hunter === true){
+                                    var bug_hunter = ":white_check_mark: "
+                                }else{
+                                    var bug_hunter = ":x:"
+                                }
+                                if(response.data.informations.flags.is_premium === true){
+                                    var premium = ":white_check_mark: "
+                                }else{  
+                                    var premium = ":x:"
+                                }
+                                if(response.data.informations.ban.banned === true){
+                                    var ban = ":white_check_mark: "
+                                    var time = response.data.informations.ban.until
+                                    var reason = response.data.informations.ban.reason
+                                }else{
+                                    var ban = ":x:"
+                                    var time = ":x:"
+                                    var reason = ":x:"
+                                }
+                                if(response.data.informations.parental_control.status === 'yes'){
+                                    var control = ":white_check_mark: "
+                                    var parent = response.data.informations.parental_control.parent_id
+                                }else{
+                                    var control = ":x:"
+                                    var parent = ":x:"
+                                }
+                                if(response.data.informations.cgu_accepted === true){
+                                    var cgu = ":white_check_mark: "
+                                }else{
+                                    var cgu = ":x:"
+                                }
+                                if(response.data.informations.verified === '1'){
+                                    var verified = ":white_check_mark: "
+                                }else{
+                                    var verified = ":x:"
+                                }
+                                if(response.data.informations['2fa_enabled'] === true){
+                                    var adf = ":white_check_mark:"
+                                }else{
+                                    var adf = ":x:"
+                                }
+                                if(response.data.login_method.google === true){
+                                    var google = ":white_check_mark:"
+                                }else{
+                                    var google = ":x:"
+                                }
+                                if(response.data.login_method.discord === true){
+                                    var discord = ":white_check_mark:"
+                                }else{
+                                    var discord = ":x:"
+                                }
+                                if(response.data.login_method['entmip.fr'] === true){
+                                    var entmip = ":white_check_mark:"
+                                }else{
+                                    var entmip = ":x:"
+                                }
+                                var embedd = new Discord.RichEmbed({
+                                    "title": `Résultats de recherche pour : ${personn}`,
+                                    "thumbnail": {
+                                        "url": `https://edu-focus.org/assets/media/${response.data.informations.photo}?size=200`
+                                        },
+                                    "fields": [
+                                        {
+                                        "name": "Niveau de partage des données",
+                                        "value": "Toutes les données",
+                                        "inline": false
+                                        },
+                                        {
+                                        "name": "Informations générales :",
+                                        "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRank : ${response.data.informations.rank}\n Email : ${response.data.informations.email}`,
+                                        "inline": true
+                                        },
+                                        {
+                                        "name": "Informations personnelles :",
+                                        "value": `Prénom : ${response.data.informations.first_name}\nNom : ${response.data.informations.last_name}\nDate de naissance : ${response.data.informations.birthday}\nClasse : ${response.data.informations.classroom}eme`,
+                                        "inline": true
+                                        },
+                                        {
+                                        "name": "Flags :",
+                                        "value": `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`,
+                                        "inline": true
+                                        },
+                                        {
+                                        "name": "Divers :",
+                                        "value": `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nID du parent : ${parent}\nCGU acceptés : ${cgu}`,
+                                        "inline": true
+                                        },
+                                        {
+                                        "name": "Ecoles :",
+                                        "value": `WIP`,
+                                        "inline": true
+                                        },
+                                        {
+                                        "name": "Methodes de connection :",
+                                        "value": `Google : ${google}\nDiscord : ${discord}\nEntmip : ${entmip}`,
+                                        "inline": true
+                                        },
+                                        {
+                                        "name": "Sanctions :",
+                                        "value": `Banni : ${ban}\nJusqu'a : ${time}\nRaison: ${reason}`,
+                                        "inline": true
+                                        }
+                                    ]
+                                    })
+                            message.channel.send(embedd)
                         }
                     }else{
                         if(response.message === "no user found"){
