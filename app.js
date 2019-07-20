@@ -31,8 +31,7 @@ bot.on("ready", async () => {
 });
 
 bot.on ("message", message => {
-    if(message.author.bot) return
-    if (message.channel.type === "dm") return
+    if (message.author.bot || message.channel.type === "dm") return
 
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
