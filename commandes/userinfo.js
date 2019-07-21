@@ -54,13 +54,13 @@ module.exports.run = async (bot, message, args, key) => {
                             case 1:
                                 let assos_member = infos.flags.is_assoc_member?':white_check_mark:':'x';
                                 let bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':'x';
-                                let bug_hunter = infos.flags.is_premium?':white_check_mark:':'x';
+                                let premium = infos.flags.is_premium?':white_check_mark:':'x';
 
                                 let ban = infos.ban.banned?':white_check_mark:':'x';
                                 let time = infos.ban.banned?infos.ban.until:'x';
                                 let reason = infos.ban.banned?infos.ban.reason:'x';
 
-                                var contorl = infos.parental_control.status==='yes'?'white_check_mark':':x:'
+                                var control = infos.parental_control.status==='yes'?'white_check_mark':':x:'
                                 var parent = infos.parental_control.status==='yes'?infos.parent.parent_id:':x:'
 
                                 let cgu = infos.cgu_accepted === true?':white_check_mark:':'x';
@@ -104,13 +104,13 @@ module.exports.run = async (bot, message, args, key) => {
                             case 2:
                                 let assos_member = infos.flags.is_assoc_member?':white_check_mark:':'x';
                                 let bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':'x';
-                                let bug_hunter = infos.flags.is_premium?':white_check_mark:':'x';
+                                let premium = infos.flags.is_premium?':white_check_mark:':'x';
 
                                 let ban = infos.ban.banned?':white_check_mark:':'x';
                                 let time = infos.ban.banned?infos.ban.until:'x';
                                 let reason = infos.ban.banned?infos.ban.reason:'x';
 
-                                var contorl = infos.parental_control.status==='yes'?'white_check_mark':':x:'
+                                var control = infos.parental_control.status==='yes'?'white_check_mark':':x:'
                                 var parent = infos.parental_control.status==='yes'?infos.parent.parent_id:':x:'
 
                                 let cgu = infos.cgu_accepted === true?':white_check_mark:':'x';
@@ -193,13 +193,13 @@ module.exports.run = async (bot, message, args, key) => {
                             case 3:
                                 let assos_member = infos.flags.is_assoc_member?':white_check_mark:':'x';
                                 let bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':'x';
-                                let bug_hunter = infos.flags.is_premium?':white_check_mark:':'x';
+                                let premium = infos.flags.is_premium?':white_check_mark:':'x';
 
                                 let ban = infos.ban.banned?':white_check_mark:':'x';
                                 let time = infos.ban.banned?infos.ban.until:'x';
                                 let reason = infos.ban.banned?infos.ban.reason:'x';
 
-                                var contorl = infos.parental_control.status==='yes'?'white_check_mark':':x:'
+                                var control = infos.parental_control.status==='yes'?'white_check_mark':':x:'
                                 var parent = infos.parental_control.status==='yes'?infos.parent.parent_id:':x:'
 
                                 let cgu = infos.cgu_accepted === true?':white_check_mark:':'x';

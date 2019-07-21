@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args, key) => {
           },
           {
             "name": "Commandes réservés au staff d'Edu-Focus",
-            "value": "EF!userinfo {pseudonyme} => Affiche toutes les informations sur l'utilisateur déterminé
+            "value": "EF!userinfo {pseudonyme} => Affiche toutes les informations sur l'utilisateur déterminé"
           }
         ]
       })
