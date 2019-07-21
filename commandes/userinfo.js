@@ -49,7 +49,8 @@ module.exports.run = async (bot, message, args, key) => {
                                       }
                                     ]
                                   })
-                                message.channel.send(embedd) 
+                                message.channel.send(embedd)
+                                break; 
                             case 1:
                                 let assos_member = infos.flags.is_assoc_member?':white_check_mark:':'x';
                                 let bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':'x';
@@ -97,8 +98,9 @@ module.exports.run = async (bot, message, args, key) => {
                                         "inline": true
                                       }
                                     ]
-                                })
-                                message.channel.send(embedd);
+                                  })
+                                  message.channel.send(embedd)
+                                  break; 
                             case 2:
                                 let assos_member = infos.flags.is_assoc_member?':white_check_mark:':'x';
                                 let bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':'x';
@@ -186,7 +188,8 @@ module.exports.run = async (bot, message, args, key) => {
                                         }
                                     ]
                                     })
-                                message.channel.send(embedd)
+                                message.channel.send(embedd);
+                                break;
                             case 3:
                                 let assos_member = infos.flags.is_assoc_member?':white_check_mark:':'x';
                                 let bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':'x';
@@ -278,8 +281,9 @@ module.exports.run = async (bot, message, args, key) => {
                                         "inline": true
                                         }
                                     ]
-                                })
-                                message.channel.send(embedd)
+                                    })
+                            message.channel.send(embedd)
+                            break; 
                         }
                     }else{
                         if(response.message === "no user found"){
