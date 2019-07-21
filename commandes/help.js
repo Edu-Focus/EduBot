@@ -6,10 +6,14 @@ module.exports.run = async (bot, message, args, key) => {
         "title": `Page d'aide`,
         "fields": [
           {
-            "name": "Commandes réservés au staff d'Edu-Focus",
-            "value": "EF!userinfo {pseudonyme} => Donne les informations d'un compte Edu-Focus",
-            //"inline": true
+            "name": "Commandes générales",
+            "value": "EF!help => Affiche cette page d'aide\nEF!staff => Affiche les membres du staff d'Edu-Focus",
+            //"inline": false
           },
+          {
+            "name": "Commandes réservés au staff d'Edu-Focus",
+            "value": "EF!userinfo {pseudonyme} => Affiche toutes les informations sur l'utilisateur déterminé
+          }
         ]
       })
     message.channel.send(embedd) 
