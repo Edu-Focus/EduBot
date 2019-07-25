@@ -24,41 +24,39 @@ module.exports.run = async (bot, message, args, key) => {
                     message.delete('1')
                     if(response){
                         if(response.status === "success"){
-                        let infos = response.data.informations;
+                        var infos = response.data.informations;
 
                         switch(response.data.authorization_level) {
                             case 0:
                                 var embedd = new Discord.RichEmbed({
-                                "title": `Profil de ${personn}`,
-                                "thumbnail": {
-                                "url": `https://edu-focus.org/assets/media/${response.data.informations.photo}?size=200`
-                                },
-                                "fields": [
-                                {
-                                "name": "Niveau de partage des données",
-                                "value": "Ne rien partager",
-                                //"inline": true
-                                },
-                                {
-                                "name": "Informations générales :",
-                                "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRank : ${response.data.informations.rank}`,
-                                //"inline": true
-                                }
-                                ]
+                                    "title": `Profil de ${personn}`,
+                                    "thumbnail": {
+                                        "url": `https://edu-focus.org/assets/media/${response.data.informations.photo}?size=200`
+                                    },
+                                    "fields": [
+                                        {
+                                            "name": "Niveau de partage des données",
+                                            "value": "Ne rien partager",
+                                        },
+                                        {
+                                            "name": "Informations générales :",
+                                            "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRank : ${response.data.informations.rank}`,
+                                        }
+                                    ]
                                 })
                                 message.channel.send(embedd)
                                 break;
                             case 1:
-                                let assos_member = infos.flags.is_assoc_member?':white_check_mark:':'x';
-                                let bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':'x';
-                                let premium = infos.flags.is_premium?':white_check_mark:':'x';
-                                let ban = infos.ban.banned?':white_check_mark:':'x';
-                                let time = infos.ban.banned?infos.ban.until:'x';
-                                let reason = infos.ban.banned?infos.ban.reason:'x';
+                                var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
+                                var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
+                                var premium = infos.flags.is_premium?':white_check_mark:':':x:';
+                                var ban = infos.ban.banned?':white_check_mark:':':x:';
+                                var time = infos.ban.banned?infos.ban.until:':x:';
+                                var reason = infos.ban.banned?infos.ban.reason:':x:';
                                 var control = infos.parental_control.status==='yes'?'white_check_mark':':x:'
-                                var parent = infos.parental_control.status==='yes'?infos.parent.parent_id:':x:'
-                                let cgu = infos.cgu_accepted === true?':white_check_mark:':'x';
-                                let verified = infos.verified === true?':white_check_mark:':'x';
+                                var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
+                                var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
+                                var verified = infos.verified === true?':white_check_mark:':':x:';
 
                                 var embedd = new Discord.RichEmbed({
                                     "title": `Résultats de recherche pour : _${personn}_`,
@@ -96,38 +94,38 @@ module.exports.run = async (bot, message, args, key) => {
                                 message.channel.send(embedd)
                                 break; 
                             case 2:
-                                let assos_member = infos.flags.is_assoc_member?':white_check_mark:':'x';
-                                let bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':'x';
-                                let premium = infos.flags.is_premium?':white_check_mark:':'x';
-                                let ban = infos.ban.banned?':white_check_mark:':'x';
-                                let time = infos.ban.banned?infos.ban.until:'x';
-                                let reason = infos.ban.banned?infos.ban.reason:'x';
+                                var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
+                                var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
+                                var premium = infos.flags.is_premium?':white_check_mark:':':x:';
+                                var ban = infos.ban.banned?':white_check_mark:':':x:';
+                                var time = infos.ban.banned?infos.ban.until:':x:';
+                                var reason = infos.ban.banned?infos.ban.reason:':x:';
                                 var control = infos.parental_control.status==='yes'?'white_check_mark':':x:'
-                                var parent = infos.parental_control.status==='yes'?infos.parent.parent_id:':x:'
-                                let cgu = infos.cgu_accepted === true?':white_check_mark:':'x';
-                                let verified = infos.verified === true?':white_check_mark:':'x';
-                                let verified = infos['2fa_enabled']?':white_check_mark:':'x';
-                                let login_methods = response.data.login_method;
-                                let google = login_methods.google?':white_check_mark:':'x';
-                                let discord = login_methods.discord?':white_check_mark:':'x';
-                                let entmip = login_methods.entmip?':white_check_mark:':'x';
+                                var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
+                                var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
+                                var verified = infos.verified === true?':white_check_mark:':':x:';
+                                var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
+                                var login_methods = response.data.login_method;
+                                var google = login_methods.google?':white_check_mark:':':x:';
+                                var discord = login_methods.discord?':white_check_mark:':':x:';
+                                var entmip = login_methods.entmip?':white_check_mark:':':x:';
 
-                                let schools = response.data.schools;
-                                let schoolsString = '';
+                                var schools = response.data.schools;
+                                var schoolsString = '';
                                 Object.keys(schools).forEach(function(key) {
-                                    let data = schools[key];
+                                    var data = schools[key];
                                     switch (data.rank) {
                                         case 'director':
-                                            let rank = 'Directeur';
+                                            var rank = 'Directeur';
                                             break;
                                         case 'professor':
-                                            let rank = 'professeur';
+                                            var rank = 'professeur';
                                             break;
                                         case 'student_council':
-                                            let rank = 'Délégué';
+                                            var rank = 'Délégué';
                                             break;
                                         case 'student':
-                                            let rank = 'Elève';
+                                            var rank = 'Elève';
                                             break;
                                     }
                                     schoolsString += rank + " de " + key + "\n"
@@ -180,38 +178,39 @@ module.exports.run = async (bot, message, args, key) => {
                                 message.channel.send(embedd);
                                 break;
                             case 3:
-                                let assos_member = infos.flags.is_assoc_member?':white_check_mark:':'x';
-                                let bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':'x';
-                                let premium = infos.flags.is_premium?':white_check_mark:':'x';
-                                let ban = infos.ban.banned?':white_check_mark:':'x';
-                                let time = infos.ban.banned?infos.ban.until:'x';
-                                let reason = infos.ban.banned?infos.ban.reason:'x';
+                                var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
+                                var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
+                                var premium = infos.flags.is_premium?':white_check_mark:':':x:';
+                                var ban = infos.ban.banned?':white_check_mark:':':x:';
+                                var time = infos.ban.banned?infos.ban.until:':x:';
+                                var reason = infos.ban.banned?infos.ban.reason:':x:';
                                 var control = infos.parental_control.status==='yes'?'white_check_mark':':x:'
-                                var parent = infos.parental_control.status==='yes'?infos.parent.parent_id:':x:'
-                                let cgu = infos.cgu_accepted === true?':white_check_mark:':'x';
-                                let verified = infos.verified === true?':white_check_mark:':'x';
-                                let verified = infos['2fa_enabled']?':white_check_mark:':'x';
-                                let login_methods = response.data.login_method;
-                                let google = login_methods.google?':white_check_mark:':'x';
-                                let discord = login_methods.discord?':white_check_mark:':'x';
-                                let entmip = login_methods.entmip?':white_check_mark:':'x';
+                                var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
+                                var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
+                                var verified = infos.verified === true?':white_check_mark:':':x:';
+                                var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
+                                var login_methods = response.data.login_method;
+                                var google = login_methods.google?':white_check_mark:':':x:';
+                                var discord = login_methods.discord?':white_check_mark:':':x:';
+                                var entmip = login_methods.entmip?':white_check_mark:':':x:';
+                                
 
-                                let schools = response.data.schools;
-                                let schoolsString = '';
+                                var schools = response.data.schools;
+                                var schoolsString = '';
                                 Object.keys(schools).forEach(function(key) {
-                                    let data = schools[key];
+                                    var data = schools[key];
                                     switch (data.rank) {
                                         case 'director':
-                                            let rank = 'Directeur';
+                                            var rank = 'Directeur';
                                             break;
                                         case 'professor':
-                                            let rank = 'professeur';
+                                            var rank = 'professeur';
                                             break;
                                         case 'student_council':
-                                            let rank = 'Délégué';
+                                            var rank = 'Délégué';
                                             break;
                                         case 'student':
-                                            let rank = 'Elève';
+                                            var rank = 'Elève';
                                             break;
                                     }
                                     schoolsString += rank + " de " + key + "\n"
@@ -278,6 +277,7 @@ module.exports.run = async (bot, message, args, key) => {
                                     }
                                 ]
                             })
+                            message.channel.send(embedd)
                         }else{
                             var embedd = new Discord.RichEmbed({
                                 "fields": [
@@ -288,8 +288,9 @@ module.exports.run = async (bot, message, args, key) => {
                                 }
                                 ]
                             })
+                            message.channel.send(embedd)
                         }
-                        message.channel.send(embedd)
+                        
                     }
                 })
             })
