@@ -273,6 +273,19 @@ module.exports.run = async (bot, message, args, key) => {
                                     schoolsString = schoolsString.substr(0, schoolsString.length-2);
 
                                     if(schoolsString == "") schoolsString = "Aucune école"
+
+                                        var level = response.data.informations.classroom
+
+                                        var classroom = (level=='-2'?'Autre':
+                                                        (level=='-1'?'Personnel d\'établissement':
+                                                        (level=='0'?'Terminale':
+                                                        (level=='1'?'Première':
+                                                        (level=='2'?'Seconde':
+                                                        (level=='3'?'Troisième':
+                                                        (level=='4'?'Quatrième':
+                                                        (level=='5'?'Cinquième':
+                                                        (level=='6'?'Sixième':'Enseignement primaire'
+                                        )))))))));
         
                                     var embedd = new Discord.RichEmbed({
                                         "title": `Résultats de recherche pour : ${personn}`,
@@ -293,7 +306,7 @@ module.exports.run = async (bot, message, args, key) => {
                                             },
                                             {
                                                 "name": "Informations personnelles :",
-                                                "value": `Prénom : ${response.data.informations.first_name}\nNom : ${response.data.informations.last_name}\nDate de naissance : ${response.data.informations.birthday}\nClasse : ${response.data.informations.classroom}eme`,
+                                                "value": `Prénom : ${response.data.informations.first_name}\nNom : ${response.data.informations.last_name}\nDate de naissance : ${response.data.informations.birthday}\nNiveau scolaire : ${classroom}`,
                                                 "inline": true
                                             },
                                             {
