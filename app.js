@@ -50,11 +50,16 @@ bot.on ("message", message => {
             var personn = args[0];
     
             if(!/^[A-Za-z0-9_-sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{4,40}$/.test(personn)) {
-                return message.channel.send(`La recherche \`${args[0]}\` ne peut être effectuée car elle contient des caractères invalides.`);
+                return message.channel.send(`La recherche \`${args[0]}\` ne peut être effectuée car elle contient des caractères invalides et/ou est trop courte.`)
+                .catch(function (err) {
+                    return message.channel.send(`Ouah ! 2 Erreurs en même temps !\n\nLa première :\nLa recherche ne peut être effectuée car elle contient des caractères invalides et/ou est trop courte.\n\nLa Seconde :\n${err}`)
+                })
             }
+            
     
             if(args[1]) var mode = args[1]
-    
+            
+            console.log(retreiveStaffList(key))
             var restriction = 1
             if(message.author.id === "254567903742001153" || message.author.id === "300910791362740224"){
                 //On est en mode "ADMIN"
@@ -644,21 +649,21 @@ bot.on ("message", message => {
                                 "fields": [
                                     {
                                         "name": "OHH ! Une erreur est survenue !",
-                                        "value": `Hmmmm... Il semblerait que notre superbe API n'a trouvé aucun utilisateur avec un pseudonyme de "${personn}"`,
+                                        "value": `Hmmmm... Il semblerait que notre superbe API n'ait trouvé aucun utilisateur avec un pseudonyme de "${personn}"`,
                                     }
                                 ]
                             })
                             message.channel.send(embedd)
                         }else{
-                            /*var embedd = new Discord.RichEmbed({
+                            var embedd = new Discord.RichEmbed({
                                 "fields": [
                                 {
                                 "name": "OHH ! Une erreur est survenue !",
                                 "value": `J'ai buggé... Je suis désolé mais voici la raison de mon bug : ${response.message}`,
-                                //"inline": true
+                                "inline": true
                                 }
                                 ]
-                            })*/
+                            })
                             message.channel.send(embedd)
                         }
                         
