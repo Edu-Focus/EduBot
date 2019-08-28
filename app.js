@@ -62,10 +62,19 @@ bot.on ("message", message => {
                     //On est dans le bon serveur, possibilitée d'exécuter la commande sans restriction
                     if(message.channel.id == "602277789349052426"){
                         //POWWWWWWWWWEEEEEEEEEEEEEEEER
-                        var restriction = 0
-                    }else if(mode && mode === "-noreqs") {
-                        var restriction = 0
+                        restriction = 0
                     }
+                }
+            }
+
+            //Si on a tapé "-noreqs derière la commande"
+            if(mode === '-noreqs'){
+                if(message.author.id === "254567903742001153" || message.author.id === "300910791362740224"){
+                    //Si c'est Vasco ou Marc => POOOOOOWWWWWWWWEEEEEEEER !!!!
+                    restriction = 0
+                }else{
+                    //Sinon perdu xDDD
+                    return message.channel.send("L'option `-noreqs` est réservé aux `Administrateurs Système` d'Edu-Focus.")
                 }
             }
             //message.channel.send(`\`\`\`INFOS :\nAUTH : ${message.author.id}\nGUILD : ${message.guild.id}\nCHAN : ${message.channel.id}\nRESTRIC : ${restriction}\`\`\``)
