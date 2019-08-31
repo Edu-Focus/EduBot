@@ -82,8 +82,7 @@ bot.on ("message", message => {
                     return message.channel.send("L'option `-noreqs` est réservé aux `Administrateurs Système` d'Edu-Focus.")
                 }
             }
-            //message.channel.send(`\`\`\`INFOS :\nAUTH : ${message.author.id}\nGUILD : ${message.guild.id}\nCHAN : ${message.channel.id}\nRESTRIC : ${restriction}\`\`\``)
-    
+                
             var wait = message.channel.send("Demande d'informations au serveur d'Edu-Focus en cours")
             wait.then(function (message) {
                 request({
@@ -422,10 +421,7 @@ bot.on ("message", message => {
                                         var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
                                         var premium = infos.flags.is_premium?':white_check_mark:':':x:';
                                         var ban = infos.ban.banned?':white_check_mark:':':x:';
-                                        //var time = infos.ban.banned?infos.ban.until:':x:';
-                                        //var reason = infos.ban.banned?infos.ban.reason:':x:';
                                         var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
-                                        //var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
                                         var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
                                         var verified = infos.verified === true?':white_check_mark:':':x:';
             
@@ -470,39 +466,10 @@ bot.on ("message", message => {
                                         var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
                                         var premium = infos.flags.is_premium?':white_check_mark:':':x:';
                                         var ban = infos.ban.banned?':white_check_mark:':':x:';
-                                        //var time = infos.ban.banned?infos.ban.until:':x:';
-                                        //var reason = infos.ban.banned?infos.ban.reason:':x:';
                                         var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
-                                        //var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
                                         var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
                                         var verified = infos.verified === true?':white_check_mark:':':x:';
                                         var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
-                                        /*var login_methods = response.data.login_method;
-                                        var google = login_methods.google?':white_check_mark:':':x:';
-                                        var discord = login_methods.discord?':white_check_mark:':':x:';
-                                        var entmip = login_methods.entmip?':white_check_mark:':':x:';*/
-            
-                                        /*var schools = response.data.schools;
-                                        var schoolsString = '';
-                                        Object.keys(schools).forEach(function(key) {
-                                            var data = schools[key];
-                                            switch (data.rank) {
-                                                case 'director':
-                                                    var rank = 'Directeur';
-                                                    break;
-                                                case 'professor':
-                                                    var rank = 'professeur';
-                                                    break;
-                                                case 'student_council':
-                                                    var rank = 'Délégué';
-                                                    break;
-                                                case 'student':
-                                                    var rank = 'Elève';
-                                                    break;
-                                            }
-                                            schoolsString += rank + " de " + key + "\n"
-                                        });
-                                        schoolsString = schoolsString.substr(0, schoolsString.length-2);*/
             
                                         var embedd = new Discord.RichEmbed({
                                             "title": `Résultats de recherche pour : ${personn}`,
@@ -531,16 +498,6 @@ bot.on ("message", message => {
                                                     "value": `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nCGU acceptés : ${cgu}`,
                                                     "inline": true
                                                 },
-                                                /*{
-                                                    "name": "Ecoles :",
-                                                    "value": schoolsString,
-                                                    "inline": true
-                                                },*/
-                                                /*{
-                                                    "name": "Methodes de connection :",
-                                                    "value": `Google : ${google}\nDiscord : ${discord}\nEntmip : ${entmip}`,
-                                                    "inline": true
-                                                },*/
                                                 {
                                                     "name": "Sanctions :",
                                                     "value": `Banni : ${ban}`,
@@ -555,41 +512,12 @@ bot.on ("message", message => {
                                         var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
                                         var premium = infos.flags.is_premium?':white_check_mark:':':x:';
                                         var ban = infos.ban.banned?':white_check_mark:':':x:';
-                                        //var time = infos.ban.banned?infos.ban.until:':x:';
-                                        //var reason = infos.ban.banned?infos.ban.reason:':x:';
                                         var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
-                                        //var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
                                         var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
                                         var verified = infos.verified === true?':white_check_mark:':':x:';
                                         var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
-                                        /*var login_methods = response.data.login_method;
-                                        var google = login_methods.google?':white_check_mark:':':x:';
-                                        var discord = login_methods.discord?':white_check_mark:':':x:';
-                                        var entmip = login_methods.entmip?':white_check_mark:':':x:';*/
-    
-                                        /*var schools = response.data.schools;
-                                        var schoolsString = '';
-                                        Object.keys(schools).forEach(function(key) {
-                                            var data = schools[key];
-                                            switch (data.rank) {
-                                                case 'director':
-                                                    var rank = 'Directeur';
-                                                    break;
-                                                case 'professor':
-                                                    var rank = 'professeur';
-                                                    break;
-                                                case 'student_council':
-                                                    var rank = 'Délégué';
-                                                    break;
-                                                case 'student':
-                                                    var rank = 'Elève';
-                                                    break;
-                                            }
-                                            schoolsString += rank + " de " + key + "\n"
-                                        });
-                                        schoolsString = schoolsString.substr(0, schoolsString.length-2);*/
             
-                                        var embedd = new Discord.RichEmbed({
+                                        const embedd = new Discord.RichEmbed({
                                             "title": `Résultats de recherche pour : ${personn}`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
@@ -606,11 +534,6 @@ bot.on ("message", message => {
                                                     "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRang : ${rank}`,
                                                     "inline": true
                                                 },
-                                                /*{
-                                                    "name": "Informations personnelles :",
-                                                    "value": `Prénom : ${response.data.informations.first_name}\nNom : ${response.data.informations.last_name}\nDate de naissance : ${response.data.informations.birthday}\nClasse : ${response.data.informations.classroom}eme`,
-                                                    "inline": true
-                                                },*/
                                                 {
                                                     "name": "Flags :",
                                                     "value": `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`,
@@ -621,16 +544,6 @@ bot.on ("message", message => {
                                                     "value": `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nCGU acceptés : ${cgu}`,
                                                     "inline": true
                                                 },
-                                                /*{
-                                                    "name": "Etablissements scolaires :",
-                                                    "value": schoolsString,
-                                                    "inline": true
-                                                },*/
-                                                /*{
-                                                    "name": "Methodes de connection :",
-                                                    "value": `Google : ${google}\nDiscord : ${discord}\nEntmip : ${entmip}`,
-                                                    "inline": true
-                                                },*/
                                                 {
                                                     "name": "Sanctions :",
                                                     "value": `Banni : ${ban}`,
@@ -645,7 +558,7 @@ bot.on ("message", message => {
                         }
                         
                         }else if(response.message === "no user found"){
-                            var embedd = new Discord.RichEmbed({
+                            var embed = new Discord.RichEmbed({
                                 "fields": [
                                     {
                                         "name": "OHH ! Une erreur est survenue !",
@@ -653,9 +566,9 @@ bot.on ("message", message => {
                                     }
                                 ]
                             })
-                            message.channel.send(embedd)
+                            message.channel.send(embed)
                         }else{
-                            var embedd = new Discord.RichEmbed({
+                            var embed = new Discord.RichEmbed({
                                 "fields": [
                                 {
                                 "name": "OHH ! Une erreur est survenue !",
@@ -664,13 +577,13 @@ bot.on ("message", message => {
                                 }
                                 ]
                             })
-                            message.channel.send(embedd)
+                            message.channel.send(embed)
                         }
                         
                     }
                 })
                 .catch(function (err) {
-                    return message.channel.send(`ERREUR #B002\nDebug : ${err}`)
+                    return message.channel.send(`Error : ${err}`)
                 })
             })
         }else{
@@ -680,15 +593,11 @@ bot.on ("message", message => {
 
     if(cmd === (prefix + 'staff')){
         retreiveStaffList(key).then(function(list){
-            /*console.log('SUCCES')
-            console.log("Réponse du serveur: \`\`\`json\n"+JSON.stringify(list,null)+"\n\`\`\`");*/
-
             var staff = '';
             var adminsys = ''
             var admin = ''
             var modo = ''
             Object(list).forEach(function(list) {
-                //console.log(list)
                 if(list.profile.rank === 'system') return
 
                 if(list.misc.discord_id != null){
