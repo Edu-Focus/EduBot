@@ -44,7 +44,7 @@ bot.on ("message", message => {
     if(cmd === (prefix + "ping")){
         message.channel.send("Pong")
     }
-    
+
     if(cmd === (prefix + 'userinfo')){
         if(args[0]){
             var personn = args[0];
@@ -54,12 +54,11 @@ bot.on ("message", message => {
                 .catch(function (err) {
                     return message.channel.send(`Ouah ! 2 Erreurs en même temps !\n\nLa première :\nLa recherche ne peut être effectuée car elle contient des caractères invalides et/ou est trop courte.\n\nLa Seconde :\n${err}`)
                 })
-            }
-            
+            }            
     
             if(args[1]) var mode = args[1]
             
-            console.log(retreiveStaffList(key))
+            //console.log(retreiveStaffList(key)) ==> Pour plus tard
             var restriction = 1
             if(message.author.id === "254567903742001153" || message.author.id === "300910791362740224"){
                 //On est en mode "ADMIN"
@@ -82,7 +81,7 @@ bot.on ("message", message => {
                     return message.channel.send("L'option `-noreqs` est réservé aux `Administrateurs Système` d'Edu-Focus.")
                 }
             }
-                
+
             var wait = message.channel.send("Demande d'informations au serveur d'Edu-Focus en cours")
             wait.then(function (message) {
                 request({
@@ -97,9 +96,11 @@ bot.on ("message", message => {
                     message.delete('1')
                     if(response){
                         if(response.status === "success"){
-                        var infos = response.data.informations;
-    
-                        switch(response.data.informations.rank){
+                        var data = response.data;
+                        var infos = data.informations;
+
+                        //Primièrement, on regarde quel est le rôle de l'utilisateur.
+                        switch(infos.rank){
                             case 'user':
                                 var rank = 'Utilisateur'
                                 var color = 0x616161
@@ -125,14 +126,77 @@ bot.on ("message", message => {
                                 var color = 0x546E7A
                                 break;
                         }
-    
+
+                        if(data.authorization_level > 0){
+                        
+                            var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
+                            var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
+                            var premium = infos.flags.is_premium?':white_check_mark:':':x:';
+                            var ban = infos.ban.banned?':white_check_mark:':':x:';
+                            var verified = infos.verified ==='1'?':white_check_mark:':':x:';
+                            var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
+                            var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
+                            var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
+                            var time = infos.ban.banned?infos.ban.until:':x:';
+                            var reason = infos.ban.banned?infos.ban.reason:':x:';    
+
+                            if(data.authorization_level > 1){                                                           
+                                var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
+
+                                var schools = response.data.schools;
+                                    var schoolsString = '';
+                                    Object.keys(schools).forEach(function(key) {
+                                        var data = schools[key];
+                                        switch (data.rank) {
+                                            case 'director':
+                                                var rank = 'Directeur';
+                                                break;
+                                            case 'professor':
+                                                var rank = 'professeur';
+                                                break;
+                                            case 'student_council':
+                                                var rank = 'Délégué';
+                                                break;
+                                            case 'student':
+                                                var rank = 'Elève';
+                                                break;
+                                        }
+                                        schoolsString += rank + " de " + key + "\n"
+                                    });
+                                    schoolsString = schoolsString.substr(0, schoolsString.length-2);                            
+                                    if(schoolsString == "") schoolsString = "Aucune école"     
+                            
+                                var login_methods = response.data.login_method;
+                                var google = login_methods.google?':white_check_mark:':':x:';
+                                var discord = login_methods.discord?':white_check_mark:':':x:';
+                                var entmip = login_methods.entmip?':white_check_mark:':':x:';
+
+                                if(data.authorization_level > 2){                            
+                                    if(infos.classroom){
+                                        var level = infos.classroom
+                                        var classroom = (level=='-2'?'Autre':
+                                                        (level=='-1'?'Personnel d\'établissement':
+                                                        (level=='0'?'Terminale':
+                                                        (level=='1'?'Première':
+                                                        (level=='2'?'Seconde':
+                                                        (level=='3'?'Troisième':
+                                                        (level=='4'?'Quatrième':
+                                                        (level=='5'?'Cinquième':
+                                                        (level=='6'?'Sixième':'Enseignement primaire'
+                                        )))))))));
+                                    }
+                                }
+                            }
+                        }
+                    
+                        //Maintenant on peut commencer a construire notre embed          
+                        
                         switch(restriction){
                             case 0:
-                                //Uncensored
-                                switch(response.data.authorization_level) {
+                                //NOREQS
+                                switch(data.authorization_level) {
                                     case 0:
-    
-                                        var embedd = new Discord.RichEmbed({
+                                        var embed = new Discord.RichEmbed({
                                             "title": `Profil de ${personn}`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
@@ -145,26 +209,15 @@ bot.on ("message", message => {
                                                 },
                                                 {
                                                     "name": "Informations générales :",
-                                                    "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRang : ${rank}`,
+                                                    "value": `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`,
                                                 }
                                             ]
                                         })
-                                        message.channel.send(embedd)
+                                        message.channel.send(embed)
                                         break;
-                                    case 1:
-                                        var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
-                                        var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
-                                        var premium = infos.flags.is_premium?':white_check_mark:':':x:';
-                                        var ban = infos.ban.banned?':white_check_mark:':':x:';
-                                        var time = infos.ban.banned?infos.ban.until:':x:';
-                                        var reason = infos.ban.banned?infos.ban.reason:':x:';
-                                        var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
-                                        var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
-                                        var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
-                                        var verified = infos.verified === true?':white_check_mark:':':x:';
-            
-                                        var embedd = new Discord.RichEmbed({
-                                            "title": `Résultats de recherche pour : _${personn}_`,
+                                    case 1:            
+                                        var embed = new Discord.RichEmbed({
+                                            "title": `Résultats de recherche pour : ${personn}`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
                                             },
@@ -177,7 +230,7 @@ bot.on ("message", message => {
                                                 },
                                                 {
                                                     "name": "Informations générales :",
-                                                    "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRang : ${rank}\n Email : ${response.data.informations.email}`,
+                                                    "value": `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n Email : ${infos.email}`,
                                                     "inline": true
                                                 },
                                                 {
@@ -197,50 +250,10 @@ bot.on ("message", message => {
                                                 }
                                             ]
                                         })
-                                        message.channel.send(embedd)
+                                        message.channel.send(embed)
                                         break; 
                                     case 2:
-                                        var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
-                                        var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
-                                        var premium = infos.flags.is_premium?':white_check_mark:':':x:';
-                                        var ban = infos.ban.banned?':white_check_mark:':':x:';
-                                        var time = infos.ban.banned?infos.ban.until:':x:';
-                                        var reason = infos.ban.banned?infos.ban.reason:':x:';
-                                        var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
-                                        var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
-                                        var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
-                                        var verified = infos.verified === true?':white_check_mark:':':x:';
-                                        var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
-                                        var login_methods = response.data.login_method;
-                                        var google = login_methods.google?':white_check_mark:':':x:';
-                                        var discord = login_methods.discord?':white_check_mark:':':x:';
-                                        var entmip = login_methods.entmip?':white_check_mark:':':x:';
-            
-                                        var schools = response.data.schools;
-                                        var schoolsString = '';
-                                        Object.keys(schools).forEach(function(key) {
-                                            var data = schools[key];
-                                            switch (data.rank) {
-                                                case 'director':
-                                                    var rank = 'Directeur';
-                                                    break;
-                                                case 'professor':
-                                                    var rank = 'professeur';
-                                                    break;
-                                                case 'student_council':
-                                                    var rank = 'Délégué';
-                                                    break;
-                                                case 'student':
-                                                    var rank = 'Elève';
-                                                    break;
-                                            }
-                                            schoolsString += rank + " de " + key + "\n"
-                                        });
-                                        schoolsString = schoolsString.substr(0, schoolsString.length-2);
-    
-                                        if(schoolsString == "") schoolsString = "Aucune école"
-            
-                                        var embedd = new Discord.RichEmbed({
+                                        var embed = new Discord.RichEmbed({
                                             "title": `Résultats de recherche pour : ${personn}`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
@@ -254,7 +267,7 @@ bot.on ("message", message => {
                                                 },
                                                 {
                                                     "name": "Informations générales :",
-                                                    "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRang : ${rank}\n Email : ${response.data.informations.email}`,
+                                                    "value": `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n Email : ${infos.email}`,
                                                     "inline": true
                                                 },
                                                 {
@@ -284,63 +297,10 @@ bot.on ("message", message => {
                                                 }
                                             ]
                                         })
-                                        message.channel.send(embedd);
+                                        message.channel.send(embed);
                                         break;
-                                    case 3:
-                                        var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
-                                        var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
-                                        var premium = infos.flags.is_premium?':white_check_mark:':':x:';
-                                        var ban = infos.ban.banned?':white_check_mark:':':x:';
-                                        var time = infos.ban.banned?infos.ban.until:':x:';
-                                        var reason = infos.ban.banned?infos.ban.reason:':x:';
-                                        var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
-                                        var parent = infos.parental_control.parent_id==='yes'?infos.parental_control.parent_id:':x:'
-                                        var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
-                                        var verified = infos.verified === true?':white_check_mark:':':x:';
-                                        var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
-                                        var login_methods = response.data.login_method;
-                                        var google = login_methods.google?':white_check_mark:':':x:';
-                                        var discord = login_methods.discord?':white_check_mark:':':x:';
-                                        var entmip = login_methods.entmip?':white_check_mark:':':x:';
-            
-                                        var schools = response.data.schools;
-                                        var schoolsString = '';
-                                        Object.keys(schools).forEach(function(key) {
-                                            var data = schools[key];
-                                            switch (data.rank) {
-                                                case 'director':
-                                                    var rank = 'Directeur';
-                                                    break;
-                                                case 'professor':
-                                                    var rank = 'professeur';
-                                                    break;
-                                                case 'student_council':
-                                                    var rank = 'Délégué';
-                                                    break;
-                                                case 'student':
-                                                    var rank = 'Elève';
-                                                    break;
-                                            }
-                                            schoolsString += rank + " de " + key + "\n"
-                                        });
-                                        schoolsString = schoolsString.substr(0, schoolsString.length-2);
-    
-                                        if(schoolsString == "") schoolsString = "Aucune école"
-    
-                                            var level = response.data.informations.classroom
-    
-                                            var classroom = (level=='-2'?'Autre':
-                                                            (level=='-1'?'Personnel d\'établissement':
-                                                            (level=='0'?'Terminale':
-                                                            (level=='1'?'Première':
-                                                            (level=='2'?'Seconde':
-                                                            (level=='3'?'Troisième':
-                                                            (level=='4'?'Quatrième':
-                                                            (level=='5'?'Cinquième':
-                                                            (level=='6'?'Sixième':'Enseignement primaire'
-                                            )))))))));
-            
-                                        var embedd = new Discord.RichEmbed({
+                                    case 3:              
+                                        var embed = new Discord.RichEmbed({
                                             "title": `Résultats de recherche pour : ${personn}`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
@@ -354,12 +314,12 @@ bot.on ("message", message => {
                                                 },
                                                 {
                                                     "name": "Informations générales :",
-                                                    "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRang : ${rank}\n Email : ${response.data.informations.email}`,
+                                                    "value": `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n Email : ${infos.email}`,
                                                     "inline": true
                                                 },
                                                 {
                                                     "name": "Informations personnelles :",
-                                                    "value": `Prénom : ${response.data.informations.first_name}\nNom : ${response.data.informations.last_name}\nDate de naissance : ${response.data.informations.birthday}\nNiveau scolaire : ${classroom}`,
+                                                    "value": `Prénom : ${infos.first_name}\nNom : ${infos.last_name}\nDate de naissance : ${infos.birthday}\nNiveau scolaire : ${classroom}`,
                                                     "inline": true
                                                 },
                                                 {
@@ -389,15 +349,15 @@ bot.on ("message", message => {
                                                 }
                                             ]
                                         })
-                                        message.channel.send(embedd)
+                                        message.channel.send(embed)
                                         break;  
                                 }
                                 break;
                             case 1:
-                                //Censured
+                                //Public mode
                                 switch(response.data.authorization_level) {
                                     case 0:
-                                        var embedd = new Discord.RichEmbed({
+                                        var embed = new Discord.RichEmbed({
                                             "title": `Profil de ${personn}`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}`
@@ -410,23 +370,15 @@ bot.on ("message", message => {
                                                 },
                                                 {
                                                     "name": "Informations générales :",
-                                                    "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRang : ${rank}`,
+                                                    "value": `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`,
                                                 }
                                             ]
                                         })
-                                        message.channel.send(embedd)
+                                        message.channel.send(embed)
                                         break;
                                     case 1:
-                                        var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
-                                        var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
-                                        var premium = infos.flags.is_premium?':white_check_mark:':':x:';
-                                        var ban = infos.ban.banned?':white_check_mark:':':x:';
-                                        var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
-                                        var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
-                                        var verified = infos.verified === true?':white_check_mark:':':x:';
-            
-                                        var embedd = new Discord.RichEmbed({
-                                            "title": `Résultats de recherche pour : _${personn}_`,
+                                        var embed = new Discord.RichEmbed({
+                                            "title": `Résultats de recherche pour : ${personn}`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
                                             },
@@ -439,7 +391,7 @@ bot.on ("message", message => {
                                                 },
                                                 {
                                                     "name": "Informations générales :",
-                                                    "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRang : ${rank}\n`,
+                                                    "value": `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n`,
                                                     "inline": true
                                                 },
                                                 {
@@ -459,19 +411,10 @@ bot.on ("message", message => {
                                                 }
                                             ]
                                         })
-                                        message.channel.send(embedd)
+                                        message.channel.send(embed)
                                         break; 
                                     case 2:
-                                        var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
-                                        var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
-                                        var premium = infos.flags.is_premium?':white_check_mark:':':x:';
-                                        var ban = infos.ban.banned?':white_check_mark:':':x:';
-                                        var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
-                                        var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
-                                        var verified = infos.verified === true?':white_check_mark:':':x:';
-                                        var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
-            
-                                        var embedd = new Discord.RichEmbed({
+                                        var embed = new Discord.RichEmbed({
                                             "title": `Résultats de recherche pour : ${personn}`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
@@ -485,7 +428,7 @@ bot.on ("message", message => {
                                                 },
                                                 {
                                                     "name": "Informations générales :",
-                                                    "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRang : ${rank}`,
+                                                    "value": `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`,
                                                     "inline": true
                                                 },
                                                 {
@@ -505,19 +448,10 @@ bot.on ("message", message => {
                                                 }
                                             ]
                                         })
-                                        message.channel.send(embedd);
+                                        message.channel.send(embed);
                                         break;
                                     case 3:
-                                        var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
-                                        var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
-                                        var premium = infos.flags.is_premium?':white_check_mark:':':x:';
-                                        var ban = infos.ban.banned?':white_check_mark:':':x:';
-                                        var control = infos.parental_control.status==='yes'?':white_check_mark:':':x:'
-                                        var cgu = infos.cgu_accepted === true?':white_check_mark:':':x:';
-                                        var verified = infos.verified === true?':white_check_mark:':':x:';
-                                        var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
-            
-                                        const embedd = new Discord.RichEmbed({
+                                        var embed = new Discord.RichEmbed({
                                             "title": `Résultats de recherche pour : ${personn}`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
@@ -531,7 +465,7 @@ bot.on ("message", message => {
                                                 },
                                                 {
                                                     "name": "Informations générales :",
-                                                    "value": `ID : ${response.data.informations.id}\nPseudonyme : ${response.data.informations.username}\nRang : ${rank}`,
+                                                    "value": `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`,
                                                     "inline": true
                                                 },
                                                 {
@@ -551,7 +485,7 @@ bot.on ("message", message => {
                                                 }
                                             ]
                                         })
-                                        message.channel.send(embedd)
+                                        message.channel.send(embed)
                                         break;     
                                 }
                             break;
