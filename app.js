@@ -69,19 +69,14 @@ bot.on ("message", message => {
             if(args[1]) var mode = args[1]
             
             var restriction = 1
-            var noreqs = 'no'
             //Vérif des ids dynamiques (c'est le bordelje rangerais plus tard)
             retreiveStaffList(key).then(function(list){
                 var auth_ids = ''
                 Object(list).forEach(function(list) {
                     if(!list.misc.discord_id != null && !list.profile.rank === 'system_main_admin') return
 
-                    if(mode === '-noreqs'){
-                        if(message.author.id == list.misc.discord_id){
-                            restriction = 0
-                        }else{
-                            //Message d'erreur noreqs a mettre mais j'ai la flemme
-                        }
+                    if(mode === '-noreqs' && message.author.id == list.misc.discord_id){
+                        restriction = 0
                     }
 
                     if(message.author.id == list.misc.discord_id && message.guild.id == "528679953399676938" && message.channel.id == "602277789349052426"){
@@ -90,7 +85,6 @@ bot.on ("message", message => {
                     
                 });     
             })
-            
 
             var wait = message.channel.send("Demande d'informations au serveur d'Edu-Focus en cours")
             wait.then(function (message) {
@@ -198,16 +192,20 @@ bot.on ("message", message => {
                                 }
                             }
                         }
+
+                        //Message d'erreur noreqs xDD (Je le met ici prck fuck)
+
+                        if(mode === '-noreqs' && restriction === 1) return message.channel.send("L'option ``-noreqs`` est réservée aux ``Administrateurs Système`` d'Edu-Focus")
                     
-                        //Maintenant on peut commencer a construire notre embed          
-                        
+                        //Maintenant on peut commencer a construire notre embed 
+
                         switch(restriction){
                             case 0:
                                 //NOREQS
                                 switch(data.authorization_level) {
                                     case 0:
                                         var embed = new Discord.RichEmbed({
-                                            "title": `Profil de ${personn}`,
+                                            "title": `Profil de ${personn} (noreqs)`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
                                             },
@@ -227,7 +225,7 @@ bot.on ("message", message => {
                                         break;
                                     case 1:            
                                         var embed = new Discord.RichEmbed({
-                                            "title": `Résultats de recherche pour : ${personn}`,
+                                            "title": `Profil de ${personn} (noreqs)`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
                                             },
@@ -264,7 +262,7 @@ bot.on ("message", message => {
                                         break; 
                                     case 2:
                                         var embed = new Discord.RichEmbed({
-                                            "title": `Résultats de recherche pour : ${personn}`,
+                                            "title": `Profil de ${personn} (noreqs)`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
                                             },
@@ -311,7 +309,7 @@ bot.on ("message", message => {
                                         break;
                                     case 3:              
                                         var embed = new Discord.RichEmbed({
-                                            "title": `Résultats de recherche pour : ${personn}`,
+                                            "title": `Profil de ${personn} (noreqs)`,
                                             "thumbnail": {
                                                 "url": `${infos.photo}?size=200`
                                             },
