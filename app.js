@@ -45,16 +45,6 @@ bot.on ("message", message => {
         message.channel.send("Pong")
     }
 
-    if(cmd === (prefix + "test")){
-        retreiveStaffList(key).then(function(list){
-            var repaa = ''
-            Object(list).forEach(function(list) {
-                if(list.misc.discord_id != null && list.profile.rank === 'system_main_admin') repaa += `${list.misc.discord_id}\n`
-            });
-            message.channel.send(repaa)      
-        })  
-    }
-
     if(cmd === (prefix + 'userinfo')){
         if(args[0]){
             var personn = args[0];
