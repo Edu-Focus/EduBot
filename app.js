@@ -45,6 +45,16 @@ bot.on ("message", message => {
         message.channel.send("Pong")
     }
 
+    if(cmd === (prefix + "test")){
+        retreiveStaffList(key).then(function(list){
+            var repaa = ''
+            Object(list).forEach(function(list) {
+                if(list.misc.discord_id != null && list.profile.rank === 'system_main_admin') repaa += `${list.misc.discord_id}\n`
+            });
+            message.channel.send(repaa)      
+        })  
+    }
+
     if(cmd === (prefix + 'userinfo')){
         if(args[0]){
             var personn = args[0];
@@ -58,29 +68,29 @@ bot.on ("message", message => {
     
             if(args[1]) var mode = args[1]
             
-            //console.log(retreiveStaffList(key)) ==> Pour plus tard
             var restriction = 1
-            if(message.author.id === "254567903742001153" || message.author.id === "300910791362740224"){
-                //On est en mode "ADMIN"
-                if(message.guild.id == "528679953399676938"){
-                    //On est dans le bon serveur, possibilitée d'exécuter la commande sans restriction
-                    if(message.channel.id == "602277789349052426"){
-                        //POWWWWWWWWWEEEEEEEEEEEEEEEER
+            var noreqs = 'no'
+            //Vérif des ids dynamiques (c'est le bordelje rangerais plus tard)
+            retreiveStaffList(key).then(function(list){
+                var auth_ids = ''
+                Object(list).forEach(function(list) {
+                    if(!list.misc.discord_id != null && !list.profile.rank === 'system_main_admin') return
+
+                    if(mode === '-noreqs'){
+                        if(message.author.id == list.misc.discord_id){
+                            restriction = 0
+                        }else{
+                            //Message d'erreur noreqs a mettre mais j'ai la flemme
+                        }
+                    }
+
+                    if(message.author.id == list.misc.discord_id && message.guild.id == "528679953399676938" && message.channel.id == "602277789349052426"){
                         restriction = 0
                     }
-                }
-            }
-
-            //Si on a tapé "-noreqs derière la commande"
-            if(mode === '-noreqs'){
-                if(message.author.id === "254567903742001153" || message.author.id === "300910791362740224"){
-                    //Si c'est Vasco ou Marc => POOOOOOWWWWWWWWEEEEEEEER !!!!
-                    restriction = 0
-                }else{
-                    //Sinon perdu xDDD
-                    return message.channel.send("L'option `-noreqs` est réservé aux `Administrateurs Système` d'Edu-Focus.")
-                }
-            }
+                    
+                });     
+            })
+            
 
             var wait = message.channel.send("Demande d'informations au serveur d'Edu-Focus en cours")
             wait.then(function (message) {
@@ -527,7 +537,6 @@ bot.on ("message", message => {
 
     if(cmd === (prefix + 'staff')){
         retreiveStaffList(key).then(function(list){
-            var staff = '';
             var adminsys = ''
             var admin = ''
             var modo = ''
@@ -585,14 +594,14 @@ var staffList = null;
 var fallbackOccurences = 0;
 var doRequest = true;
 
-function retreiveStaffList(apiKey) {
+function retreiveStaffList(key) {
     return new Promise(function(resolve, reject){
         if (doRequest) {
             request({
                 uri: 'https://edu-focus.org/api/discord/staff',
                 json: true,
                 qs: {
-                    key: apiKey
+                    key: key
                 }
             }).then(function (response) {
 
