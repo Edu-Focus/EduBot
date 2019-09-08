@@ -45,6 +45,22 @@ bot.on ("message", message => {
         message.channel.send("Pong")
     }
 
+    if(cmd === (prefix + 'help')){
+        const embed = new Discord.RichEmbed({
+            "title": "Page d'aide",
+            "color": 0x4527A0,
+            "fields": [
+                {
+                    "name": "Utilitaires :",
+                    "value": `**EF!userinfo {username} (mode)**\nPermet de chercher des informations avec l'API d'Edu-Focus sur l'utilisateur\n**EF!staff**\nPermet d'avoir la liste du staff (avec leurs id discord)`,
+                },
+            ],
+            "footer": 'Légnede : {} = Obligatoire || () = Optionnel'
+        })
+
+        message.channel.send(embed)
+    }
+
     if(cmd === (prefix + 'userinfo')){
         if(args[0]){
             var personn = args[0];
