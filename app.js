@@ -45,6 +45,10 @@ bot.on ("message", message => {
         message.channel.send("Pong")
     }
 
+    if(cmd === (prefix + "discord") || cmd === (prefix + "support")){
+        message.channel.send("Notre serveur discord : <https://edu-foc.us/discord> (ou edu-foc.us/ds)\nLe serveur discord test (attention spam) : <https://edu-foc.us/discord-sandbox>")
+    }
+
     if(cmd === (prefix + 'help')){
         const embed = new Discord.RichEmbed({
             "title": "Page d'aide",
@@ -52,7 +56,7 @@ bot.on ("message", message => {
             "fields": [
                 {
                     "name": "Utilitaires :",
-                    "value": `**EF!userinfo {username} (mode)**\nPermet de chercher des informations avec l'API d'Edu-Focus sur l'utilisateur\n**EF!staff**\nPermet d'avoir la liste du staff (avec leurs id discord)`,
+                    "value": `**EF!userinfo {username} (mode)**\nPermet de chercher des informations avec l'API d'Edu-Focus sur l'utilisateur\n**EF!staff**\nPermet d'avoir la liste du staff (avec leurs id discord)\n**EF!discord (ou EF!support)**\nEnvoie les liens d'invitations pour les serveurs discord d'Edu-Focus`,
                 },
             ],
             "footer": 'Légnede : {} = Obligatoire || () = Optionnel'
