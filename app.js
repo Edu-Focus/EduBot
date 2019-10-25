@@ -97,6 +97,9 @@ bot.on ("message", message => {
                 });     
             })
 
+            //Message d'erreur noreqs xDD (Je le met ici prck fuck)
+            if(mode === '-noreqs' && restriction === 1) return message.channel.send("L'option ``-noreqs`` est réservée aux ``Administrateur Système`` d'Edu-Focus.\nSi jamais vous êtes un ``Administrateurs Système``, merci de relier vorte compte discord a votre compte Edu-Focus pour faire fonctionner cette option")
+
             var wait = message.channel.send("Demande d'informations au serveur d'Edu-Focus en cours")
             wait.then(function (message) {
                 request({
@@ -203,10 +206,6 @@ bot.on ("message", message => {
                                 }
                             }
                         }
-
-                        //Message d'erreur noreqs xDD (Je le met ici prck fuck)
-
-                        if(mode === '-noreqs' && restriction === 1) return message.channel.send("L'option ``-noreqs`` est réservée aux ``Administrateurs Système`` d'Edu-Focus")
                     
                         //Maintenant on peut commencer a construire notre embed 
 
