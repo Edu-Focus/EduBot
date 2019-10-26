@@ -34,6 +34,8 @@ bot.on("ready", async () => {
 });
 
 bot.on ("message", message => {
+    if(banbdd[message.author.id]) return //message.channel.send('Utilisateur ignoré')
+
     if (message.author.bot || message.channel.type === "dm") return
 
     let messageArray = message.content.split(" ");
@@ -597,12 +599,12 @@ bot.on ("message", message => {
         })
     }
 
-    if(cmd === (prefix + 'ban')){
+    if(cmd === (prefix + 'sysban')){
         let mention = message.mentions.users.first();
         //console.log(mention)
         if(!mention) return message.channel.send('Tu as oublié de mentionner un utilisateur...')
         if(mention.id === '498570647124049942') return message.channel.send("Je ne peux pas m'auto bannir...")
-        if(mention.id === message.author.id) return message.channel.send("Tu ne peux pas t'auto bannir...")
+        //if(mention.id === message.author.id) return message.channel.send("Tu ne peux pas t'auto bannir...")
 
         //console.log(args)
         if(args[1]){
@@ -610,7 +612,7 @@ bot.on ("message", message => {
         }else{
             return message.channel.send('Une raison doit être fournie...')
         }
-        console.log(raison)
+        //console.log(raison)
 
         var restriction = 1
         var staffmention = 0
@@ -624,7 +626,7 @@ bot.on ("message", message => {
             }
 
             if(restriction === 1) return message.channel.send("Cette commande est réservée aux ``Administrateurs Système`` d'Edu-Focus")
-            if(staffmention === 1) return message.channel.send("Tu ne peux pas bannir un membre du staff d'Edu-Focus")
+            //if(staffmention === 1) return message.channel.send("Tu ne peux pas bannir un membre du staff d'Edu-Focus")
 
             banbdd[mention.id] = {
                 "username": mention.username,
@@ -636,7 +638,7 @@ bot.on ("message", message => {
                 if(err) message.channel.send("Une erreur est survenue");
             });
 
-            message.channel.send('Bannissement effectué !')
+            message.channel.send('Utilisateur blacklisté avec succès.')
         })
     }
 });
@@ -701,10 +703,8 @@ function retreiveStaffList(key) {
 
 function dateFr()
 {
-    // les noms de jours / mois
     var jours = new Array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
     var mois = new Array("Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre");
-    // on recupere la date
     var date = new Date();
     var heure = date.getHours();
     var minutes = date.getMinutes();
