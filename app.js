@@ -3,55 +3,27 @@ const request = require("request-promise")
 const fs = require("fs");
 const bot = new Discord.Client();
 const config = require("./botconfig.json");
-//bot.commands = new Discord.Collection();
 let prefix = ("EF!");
-
 let banbdd = JSON.parse(fs.readFileSync("./bdd/ban.json", "utf8"));
-
-/*fs.readdir("./commandes/", (err, files) => {
-    if(err) console.log(err);
-
-    let jsfile = files.filter(f => f.split(".").pop() === "js")
-    if(jsfile.length <= 0){
-        console.log("Les fichiers commandes n'ont pas été trouvés");
-        return;
-    }
-
-    jsfile.forEach((f, i) =>{
-        let props = require(`./commandes/${f}`);
-        console.log(`${f} a bien été chargé`)
-        bot.commands.set(props.help.name, props);
-    });
-});*/
 
 bot.login(config.token)
 const key = config.api_key
 
 bot.on("ready", async () => {
-    console.log('Fichier \'app.js\' chargé !')
-    console.log(`${bot.user.username} est maintenant en ligne`);
+    console.log(`Edu-Focus, tout le monde a le droit d'apprendre !`);
     bot.user.setGame("Edu-Focus, tout le monde a le droit d'apprendre !")
 });
 
 bot.on ("message", message => {
-    if(banbdd[message.author.id]) return //message.channel.send('Utilisateur ignoré')
-
-    if (message.author.bot || message.channel.type === "dm") return
+    if (message.author.bot || message.channel.type === "dm" || banbdd[message.author.id])
 
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
 
-    /*let commandfile = bot.commands.get(cmd.slice(prefix.length));
-    if(commandfile) commandfile.run(bot,message,args,key);*/
+    if(cmd === (prefix + "ping"))return message.channel.send("Pong")
 
-    if(cmd === (prefix + "ping")){
-        message.channel.send("Pong")
-    }
-
-    if(cmd === (prefix + "discord") || cmd === (prefix + "support")){
-        message.channel.send("Notre serveur discord : <https://edu-foc.us/discord> (ou edu-foc.us/ds)\nLe serveur discord test (attention spam) : <https://edu-foc.us/discord-sandbox>")
-    }
+    if(cmd === (prefix + "discord") || cmd === (prefix + "support")) return message.channel.send("Notre serveur discord : <https://edu-foc.us/discord> (ou edu-foc.us/ds)\nLe serveur discord test (attention spam) : <https://edu-foc.us/discord-sandbox>")
 
     if(cmd === (prefix + 'help')){
         const embed = new Discord.RichEmbed({
@@ -65,8 +37,7 @@ bot.on ("message", message => {
             ],
             "footer": 'Légnede : {} = Obligatoire || () = Optionnel'
         })
-
-        message.channel.send(embed)
+        return message.channel.send(embed)
     }
 
     if(cmd === (prefix + 'userinfo')){
@@ -148,7 +119,6 @@ bot.on ("message", message => {
                         }
 
                         if(data.authorization_level > 0){
-                        
                             var assos_member = infos.flags.is_assoc_member?':white_check_mark:':':x:';
                             var bug_hunter = infos.flags.is_bug_hunter?':white_check_mark:':':x:';
                             var premium = infos.flags.is_premium?':white_check_mark:':':x:';
@@ -162,30 +132,28 @@ bot.on ("message", message => {
 
                             if(data.authorization_level > 1){                                                           
                                 var adf = infos['2fa_enabled']?':white_check_mark:':':x:';
-
                                 var schools = response.data.schools;
-                                    var schoolsString = '';
-                                    Object.keys(schools).forEach(function(key) {
-                                        var data = schools[key];
-                                        switch (data.rank) {
-                                            case 'director':
-                                                var rank = 'Directeur';
-                                                break;
-                                            case 'professor':
-                                                var rank = 'professeur';
-                                                break;
-                                            case 'student_council':
-                                                var rank = 'Délégué';
-                                                break;
-                                            case 'student':
-                                                var rank = 'Elève';
-                                                break;
-                                        }
-                                        schoolsString += rank + " de " + key + "\n"
-                                    });
-                                    schoolsString = schoolsString.substr(0, schoolsString.length-2);                            
-                                    if(schoolsString == "") schoolsString = "Aucune école"     
-                            
+                                var schoolsString = '';
+                                Object.keys(schools).forEach(function(key) {
+                                    var data = schools[key];
+                                    switch (data.rank) {
+                                        case 'director':
+                                            var rank = 'Directeur';
+                                            break;
+                                        case 'professor':
+                                            var rank = 'professeur';
+                                            break;
+                                        case 'student_council':
+                                            var rank = 'Délégué';
+                                            break;
+                                        case 'student':
+                                            var rank = 'Elève';
+                                            break;
+                                    }
+                                    schoolsString += rank + " de " + key + "\n"
+                                });
+                                schoolsString = schoolsString.substr(0, schoolsString.length-2);                            
+                                if(schoolsString == "") schoolsString = "Aucune école"     
                                 var login_methods = response.data.login_method;
                                 var google = login_methods.google?':white_check_mark:':':x:';
                                 var discord = login_methods.discord?':white_check_mark:':':x:';
@@ -210,7 +178,6 @@ bot.on ("message", message => {
                         }
                     
                         //Maintenant on peut commencer a construire notre embed 
-
                         switch(restriction){
                             case 0:
                                 //NOREQS
@@ -557,7 +524,7 @@ bot.on ("message", message => {
                     var id_discord = `(<@${list.misc.discord_id}>)`
                 }else{
                     var id_discord = "(Aucun compte discord relié)"
-                } 
+                }
 
                 switch (list.profile.rank) {                    
                     case 'system_main_admin':
@@ -569,9 +536,7 @@ bot.on ("message", message => {
                     case 'moderator':
                         modo += `${list.profile.username} ${id_discord}\n`
                         break;
-                }
-
-                
+                }                
             });
 
             var embed = new Discord.RichEmbed({
@@ -591,9 +556,7 @@ bot.on ("message", message => {
                     }
                 ]
             })
-
             message.channel.send(embed)
-
         }).catch(function(err){
             console.log(err)
         })
@@ -601,30 +564,25 @@ bot.on ("message", message => {
 
     if(cmd === (prefix + 'sysban')){
         let mention = message.mentions.users.first();
-        //console.log(mention)
         if(!mention) return message.channel.send('Tu as oublié de mentionner un utilisateur...')
         if(mention.id === '498570647124049942') return message.channel.send("Je ne peux pas m'auto bannir...")
         if(mention.id === message.author.id) return message.channel.send("Tu ne peux pas t'auto bannir...")
 
-        //console.log(args)
         if(args[1]){
             var raison = message.content.split(' ').slice(2).join(' ')
         }else{
             return message.channel.send('Une raison doit être fournie...')
         }
-        //console.log(raison)
 
         var restriction = 1
         var staffmention = 0
         retreiveStaffList(key).then(function(list){
             for(i = 0; i < list.length ; i++){
-                //console.log(i)
                 if(list[i].misc.discord_id != null){
                     if(mention.id == list[i].misc.discord_id) staffmention = 1
                     if(message.author.id == list[i].misc.discord_id && list[i].profile.rank === 'system_main_admin') restriction = 0
                 }
             }
-
             if(restriction === 1) return message.channel.send("Cette commande est réservée aux ``Administrateurs Système`` d'Edu-Focus")
             if(staffmention === 1) return message.channel.send("Tu ne peux pas bannir un membre du staff d'Edu-Focus")
 
@@ -637,7 +595,6 @@ bot.on ("message", message => {
             fs.writeFile("./bdd/ban.json", JSON.stringify(banbdd, null, 4), (err) => {
                 if(err) message.channel.send("Une erreur est survenue");
             });
-
             message.channel.send('Utilisateur blacklisté avec succès.')
         })
     }
@@ -701,55 +658,23 @@ function retreiveStaffList(key) {
     });
 }
 
-function dateFr()
-{
+function dateFr(){
     var jours = new Array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi");
     var mois = new Array("Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre");
     var date = new Date();
     var heure = date.getHours();
     var minutes = date.getMinutes();
-    // on construit le message
-    var message = jours[date.getDay()] + " ";   // nom du jour
-    message += date.getDate() + " ";   // numero du jour
-    message += mois[date.getMonth()] + " ";   // mois
-    message += date.getFullYear() + " ";
+    var rep = jours[date.getDay()] + " ";
+    rep += date.getDate() + " ";
+    rep += mois[date.getMonth()] + " ";
+    rep += date.getFullYear() + " ";
 
     if(minutes < 10){
-    message += heure + "h"
-    message += '0' + minutes
+    rep += heure + "h"
+    rep += '0' + minutes
     }else{
-    message += heure + "h"
-    message += minutes
+    rep += heure + "h"
+    rep += minutes
     }
-    //console.log(message)
-    return message;
-}
-
-function parseMessage(message) {
-    return new Promise(function(resolve, reject) {
-        let result = {
-            command: '',
-            args: []
-        };
-
-        let _ = false;
-        message
-            .split(' ')
-            .forEach(function(a,b,c){
-                if (b === 0) result.command = a.toLowerCase();
-                else if (a !== "") result.args.push(a.toLowerCase());
-                _ = c.length === b
-            });
-
-        let _i = setInterval(function(){
-            if (_) {
-                resolve(result);
-                clearInterval(_i);
-            }
-        }, 100);
-    });
-}
-
-function verifban(){
-
+    return rep;
 }
