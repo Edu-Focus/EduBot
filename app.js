@@ -1,21 +1,21 @@
 const Discord = require('discord.js');
 const request = require('request-promise');
 const fs = require('fs');
-const bot = new Discord.Client();
+const client = new Discord.Client();
 const config = require('./botconfig.json');
 const prefix = ('EF!');
 const banbdd = JSON.parse(fs.readFileSync('./bdd/ban.json', 'utf8'));
 
-bot.login(config.token);
+client.login(config.token);
 const key = config.api_key;
 
-bot.on('ready', async () => {
+client.on('ready', async () => {
 	console.log('Edu-Focus, tout le monde a le droit d\'apprendre !');
-	bot.user.setGame('Edu-Focus, tout le monde a le droit d\'apprendre !');
+	client.user.setPresence('Edu-Focus, tout le monde a le droit d\'apprendre !');
 });
 
-bot.on ('message', message => {
-	if (message.author.bot || message.channel.type === 'dm' || banbdd[message.author.id]) return;
+client.on ('message', message => {
+	if (message.author.client || message.channel.type === 'dm' || banbdd[message.author.id]) return;
 
 	const messageArray = message.content.split(' ');
 	const cmd = messageArray[0];
