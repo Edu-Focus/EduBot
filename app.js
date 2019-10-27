@@ -604,7 +604,7 @@ bot.on ("message", message => {
         //console.log(mention)
         if(!mention) return message.channel.send('Tu as oublié de mentionner un utilisateur...')
         if(mention.id === '498570647124049942') return message.channel.send("Je ne peux pas m'auto bannir...")
-        //if(mention.id === message.author.id) return message.channel.send("Tu ne peux pas t'auto bannir...")
+        if(mention.id === message.author.id) return message.channel.send("Tu ne peux pas t'auto bannir...")
 
         //console.log(args)
         if(args[1]){
@@ -626,7 +626,7 @@ bot.on ("message", message => {
             }
 
             if(restriction === 1) return message.channel.send("Cette commande est réservée aux ``Administrateurs Système`` d'Edu-Focus")
-            //if(staffmention === 1) return message.channel.send("Tu ne peux pas bannir un membre du staff d'Edu-Focus")
+            if(staffmention === 1) return message.channel.send("Tu ne peux pas bannir un membre du staff d'Edu-Focus")
 
             banbdd[mention.id] = {
                 "username": mention.username,
