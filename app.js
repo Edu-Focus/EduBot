@@ -8,7 +8,7 @@ const client = new Discord.Client();
 client.config = require("./config.js");
 
 require("./utils/manager")(client);
-require("./utils/commands")(client);
+require("./utils/process_commands")(client);
 
 client.commands = new Enmap();
 client.aliases = new Enmap();
