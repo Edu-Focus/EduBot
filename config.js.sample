@@ -1,0 +1,13 @@
+const config = {
+    "ownerID": "269156684155453451",
+    "admins": [],
+
+    "token": "...",
+    "api_key": "...",
+
+    "defaultSettings": {
+        "prefix": "!EF ",
+    },
+};
+
+module.exports = config;

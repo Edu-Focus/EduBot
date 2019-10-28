@@ -4,7 +4,8 @@
   "description": "Bot Discord pour le serveur d'Edu-Focus",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/Edu-Focus/EduBot#readme",
   "dependencies": {
     "discord.js": "^11.5.1",
+    "enmap": "^5.2.1",
     "fs": "0.0.1-security",
     "lodash": "^4.17.14",
     "package.json": "^2.0.1",
