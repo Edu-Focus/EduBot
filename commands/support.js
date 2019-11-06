@@ -5,10 +5,10 @@ exports.run = async (client, message, args, level) => {
 
 exports.conf = {
     name: "support",
-    aliases: ["discord"],
+    aliases: [],
     help: {
         category: "Utilitaires",
         description: "Envoie les liens d'invitations pour les serveurs discord d'Edu-Focus",
-        usage: "discord"
+        usage: "EF!support"
     }
 };

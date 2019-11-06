@@ -19,14 +19,14 @@ exports.run = async (client, message, args, level) => {
         };
 
         for (let command of categories[category]) {
-            field.value += `-> **__${command.conf.name}__**: ${command.conf.help.description} (usage: \`${command.conf.help.usage}\``;
+            field.value += `**__${command.conf.name}__**: ${command.conf.help.description} (usage: \`${command.conf.help.usage}\``;
             field.value += command.conf.aliases.length > 0 ? ` | alias: ${command.conf.aliases.join(", ")})\n` : `)\n`
         }
         fields.push(field)
     }
 
     e.fields = fields;
-    e.footer = {text: "Légende : {} = Obligatoire || () = Optionnel"};
+    e.footer = {text: "{} = Obligatoire ---- () = Optionnel"};
     await message.channel.send(e)
 };
 
@@ -36,6 +36,6 @@ exports.conf = {
     help: {
         category: "Utilitaires",
         description: "Affiche les informations sur les commandes",
-        usage: "help"
+        usage: "EF!help"
     }
 };

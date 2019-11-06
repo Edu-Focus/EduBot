@@ -9,6 +9,6 @@ exports.conf = {
     help: {
         category: "Utilitaires",
         description: "Retourne le ping du bot",
-        usage: "ping"
+        usage: "EF!ping"
     }
 };
