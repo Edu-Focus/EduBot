@@ -5,10 +5,11 @@ module.exports = (client) => {
 
         const args = message.content.slice(client.config.defaultSettings.prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
+        const key = client.config.key
 
         const cmd = client.commands.get(command);
         if (!cmd) return;
 
-        await cmd.run(client, message, args)
+        await cmd.run(client, message, args, key)
     });
 };

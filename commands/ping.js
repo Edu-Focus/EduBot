@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, level) => {
+exports.run = async (client, message, args, key) => {
     const msg = await message.channel.send("Pong!");
     await msg.edit(`Pong! *(Latency: ${msg.createdTimestamp - message.createdTimestamp}ms. API Latency: ${Math.round(client.ping)}ms*)`);
 };

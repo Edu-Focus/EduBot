@@ -1,6 +1,4 @@
-const Discord = require('discord.js');
-
-exports.run = async (client, message, args, level) => {
+exports.run = async (client, message, args, key) => {
     let categories = [];
     client.commands.array().forEach(command => {
         if (categories[command.conf.help.category] === undefined) categories[command.conf.help.category] = [];
