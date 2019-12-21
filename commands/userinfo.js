@@ -1,4 +1,5 @@
 const request = require('request-promise');
+const Discord = require("discord.js");
 
 exports.run = async (client, message, args, key) => {
     if(args[0]) {

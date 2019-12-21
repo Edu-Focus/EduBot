@@ -1,3 +1,5 @@
+const Discord = require("discord.js");
+
 exports.run = async (client, message, args, key) => {
     await message.channel.send("Notre serveur discord : <https://edu-foc.us/discord> (ou edu-foc.us/ds)\n" +
         "Le serveur discord test (attention spam) : <https://edu-foc.us/discord-sandbox>");
