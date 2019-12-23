@@ -464,13 +464,11 @@ exports.run = async (client, message, args, key) => {
                     }
 
                 }
-            })
-                .catch(function(err) {
+            }).catch(function(err) {
                     return message.channel.send(`Error : ${err}`);
                 });
         });
-    }
-    else{
+    }else{
         message.channel.send(`Désolé ${message.author} mais vous avez oublié d'ajouter le pseudonyme de la personne à chercher dans la base de donnée d'Edu-Focus`);
     }
     
