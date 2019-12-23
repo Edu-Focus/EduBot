@@ -1,0 +1,15 @@
+const Discord = require("discord.js");
+
+exports.run = async (client, message, args, key) => {
+    
+};
+
+exports.conf = {
+    name: "",
+    aliases: [],
+    help: {
+        category: "Utilitaires",
+        description: "",
+        usage: "EF!"
+    }
+};
