@@ -12,28 +12,24 @@ exports.run = async (client, message, args, key) => {
                 });
         }
 
-        if(args[1]) {var mode = args[1];}
-        if(!mode) { var mode = '';}
-        var restriction = 1;
-        // Vérif des ids dynamiques (c'est le bordel je rangerais plus tard)
-        retreiveStaffList(key).then(function(list) {
-            Object(list).forEach(function(list) {
-                if(!list.misc.discord_id != null && !list.profile.rank === 'system_main_admin') return;
+        if(args[1]) var mode = args[1];
 
-                if(mode === '-noreqs' && message.author.id == list.misc.discord_id) {
-                    restriction = 0;
+        if(mode === '-noreqs'){
+            await retreiveStaffList(key).then(function(list) {
+                for(let i = 0; i<list.length; i++){
+                    let id = list[i].misc.discord_id;
+                    console.log(id === message.author.id.trim() && list[i].profile.rank === "system_main_admin")
+                    if(typeof id === "string") id = id.trim();
+                    if(id === message.author.id.trim() && list[i].profile.rank === "system_main_admin"){
+                        restriction = false;
+                        return;
+                    }
                 }
+            })
 
-                if(message.author.id == list.misc.discord_id && message.guild.id == '528679953399676938' && message.channel.id == '602277789349052426') {
-                    restriction = 0;
-                }
-
-            });
-        });
-
-        // Message d'erreur noreqs xDD (Je le met ici prck fuck)
-        if(mode === '-noreqs' && restriction === 1) return message.channel.send('L\'option ``-noreqs`` est réservée aux ``Administrateur Système`` d\'Edu-Focus.\nSi jamais vous êtes un ``Administrateurs Système``, merci de relier vorte compte discord a votre compte Edu-Focus pour faire fonctionner cette option');
-
+            // Message d'erreur noreqs xDD (Je le met ici prck fuck)
+            if(restriction === true) return message.channel.send('L\'option ``-noreqs`` est réservée aux ``Administrateur Système`` d\'Edu-Focus.\nSi jamais vous êtes un ``Administrateurs Système``, merci de relier vorte compte discord a votre compte Edu-Focus pour faire fonctionner cette option');
+        }
         const wait = message.channel.send('Demande d\'informations au serveur d\'Edu-Focus en cours');
         wait.then(function(message) {
             request({
@@ -143,7 +139,7 @@ exports.run = async (client, message, args, key) => {
                         // Maintenant on peut commencer a construire notre embed
                         var embed;
                         switch(restriction) {
-                        case 0:
+                        case false:
                             // NOREQS
                             switch(data.authorization_level) {
                             case 0:
@@ -304,7 +300,7 @@ exports.run = async (client, message, args, key) => {
                                 break;
                             }
                             break;
-                        case 1:
+                        case true:
                             // Public mode
                             switch(response.data.authorization_level) {
                             case 0:
