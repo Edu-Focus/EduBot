@@ -14,7 +14,7 @@ exports.run = async (client, message, args, key) => {
 
         if(args[1]) {var mode = args[1];}
         if(!mode) { var mode = '';}
-        let restriction = 1;
+        var restriction = 1;
         // Vérif des ids dynamiques (c'est le bordel je rangerais plus tard)
         retreiveStaffList(key).then(function(list) {
             Object(list).forEach(function(list) {
@@ -50,8 +50,8 @@ exports.run = async (client, message, args, key) => {
                     if(response.status === 'success') {
                         const data = response.data;
                         const infos = data.informations;
-                        let rank;
-                        let color;
+                        var rank;
+                        var color;
                         // Premièrement, on regarde quel est le rôle de l'utilisateur.
                         switch(infos.rank) {
                         case 'user':
@@ -82,23 +82,23 @@ exports.run = async (client, message, args, key) => {
                         }
 
                         if(data.authorization_level > 0) {
-                            const assos_member = infos.flags.is_assoc_member ? ':white_check_mark:' : ':x:';
-                            const bug_hunter = infos.flags.is_bug_hunter ? ':white_check_mark:' : ':x:';
-                            const premium = infos.flags.is_premium ? ':white_check_mark:' : ':x:';
-                            const ban = infos.ban.banned ? ':white_check_mark:' : ':x:';
-                            const verified = infos.verified === '1' ? ':white_check_mark:' : ':x:';
-                            const control = infos.parental_control.status === 'yes' ? ':white_check_mark:' : ':x:';
-                            const parent = infos.parental_control.parent_id === 'yes' ? infos.parental_control.parent_id : ':x:';
-                            const cgu = infos.cgu_accepted === true ? ':white_check_mark:' : ':x:';
-                            const time = infos.ban.banned ? infos.ban.until : ':x:';
-                            const reason = infos.ban.banned ? infos.ban.reason : ':x:';
+                            var assos_member = infos.flags.is_assoc_member ? ':white_check_mark:' : ':x:';
+                            var bug_hunter = infos.flags.is_bug_hunter ? ':white_check_mark:' : ':x:';
+                            var premium = infos.flags.is_premium ? ':white_check_mark:' : ':x:';
+                            var ban = infos.ban.banned ? ':white_check_mark:' : ':x:';
+                            var verified = infos.verified === '1' ? ':white_check_mark:' : ':x:';
+                            var control = infos.parental_control.status === 'yes' ? ':white_check_mark:' : ':x:';
+                            var parent = infos.parental_control.parent_id === 'yes' ? infos.parental_control.parent_id : ':x:';
+                            var cgu = infos.cgu_accepted === true ? ':white_check_mark:' : ':x:';
+                            var time = infos.ban.banned ? infos.ban.until : ':x:';
+                            var reason = infos.ban.banned ? infos.ban.reason : ':x:';
 
                             if(data.authorization_level > 1) {
-                                const adf = infos['2fa_enabled'] ? ':white_check_mark:' : ':x:';
-                                const schools = response.data.schools;
-                                let schoolsString = '';
+                                var adf = infos['2fa_enabled'] ? ':white_check_mark:' : ':x:';
+                                var schools = response.data.schools;
+                                var schoolsString = '';
                                 Object.keys(schools).forEach(function(key) {
-                                    const data = schools[key];
+                                    var data = schools[key];
                                     switch (data.rank) {
                                     case 'director':
                                         rank = 'Directeur';
@@ -117,15 +117,15 @@ exports.run = async (client, message, args, key) => {
                                 });
                                 schoolsString = schoolsString.substr(0, schoolsString.length - 2);
                                 if(schoolsString == '') schoolsString = 'Aucune école';
-                                const login_methods = response.data.login_method;
-                                const google = login_methods.google ? ':white_check_mark:' : ':x:';
-                                const discord = login_methods.discord ? ':white_check_mark:' : ':x:';
-                                const entmip = login_methods.entmip ? ':white_check_mark:' : ':x:';
+                                var login_methods = response.data.login_method;
+                                var google = login_methods.google ? ':white_check_mark:' : ':x:';
+                                var discord = login_methods.discord ? ':white_check_mark:' : ':x:';
+                                var entmip = login_methods.entmip ? ':white_check_mark:' : ':x:';
 
                                 if(data.authorization_level > 2) {
                                     if(infos.classroom) {
-                                        const level = infos.classroom;
-                                        const classroom = (level == '-2' ? 'Autre' :
+                                        var level = infos.classroom;
+                                        var classroom = (level == '-2' ? 'Autre' :
                                             (level == '-1' ? 'Personnel d\'établissement' :
                                                 (level == '0' ? 'Terminale' :
                                                     (level == '1' ? 'Première' :
@@ -141,7 +141,7 @@ exports.run = async (client, message, args, key) => {
                         }
 
                         // Maintenant on peut commencer a construire notre embed
-                        let embed;
+                        var embed;
                         switch(restriction) {
                         case 0:
                             // NOREQS
@@ -444,7 +444,7 @@ exports.run = async (client, message, args, key) => {
 
                     }
                     else if(response.message === 'no user found') {
-                        const embed = new Discord.RichEmbed({
+                        var embed = new Discord.RichEmbed({
                             'fields': [
                                 {
                                     'name': 'Oh ! Une erreur est survenue !',
@@ -455,7 +455,7 @@ exports.run = async (client, message, args, key) => {
                         message.channel.send(embed);
                     }
                     else{
-                        const embed = new Discord.RichEmbed({
+                        var embed = new Discord.RichEmbed({
                             'fields': [
                                 {
                                     'name': 'Oh ! Une erreur est survenue !',
