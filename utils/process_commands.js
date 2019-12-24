@@ -5,7 +5,7 @@ module.exports = (client) => {
 
         const args = message.content.slice(client.config.defaultSettings.prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        const key = client.config.key
+        const key = client.config.api_key
 
         const cmd = client.commands.get(command);
         if (!cmd) return;

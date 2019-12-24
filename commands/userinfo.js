@@ -14,6 +14,7 @@ exports.run = async (client, message, args, key) => {
 
         if(args[1]) var mode = args[1];
 
+        var restriction = true
         if(mode === '-noreqs'){
             await retreiveStaffList(key).then(function(list) {
                 for(let i = 0; i<list.length; i++){
