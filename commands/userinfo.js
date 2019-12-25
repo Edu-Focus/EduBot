@@ -1,6 +1,6 @@
 const request = require('request-promise');
 const Discord = require("discord.js");
-const stafflist = require("../functions/stafflist.js")
+const staffverif = require("../functions/staffverif.js")
 
 exports.run = async (client, message, args, key) => {
     if(args[0]) {
@@ -15,22 +15,12 @@ exports.run = async (client, message, args, key) => {
         }
 
         if(args[1]) var mode = args[1];
-
         var restriction = true
-        if(mode === '-noreqs'){
-            await stafflist().then(function(list) {
-                for(let i = 0; i<list.length; i++){
-                    let id = list[i].misc.discord_id;
-                    if(id === message.author.id && list[i].profile.rank === "system_main_admin"){
-                        restriction = false;
-                        return;
-                    }
-                }
-            })
-
-            // Message d'erreur noreqs xDD (Je le met ici prck fuck)
-            if(restriction === true) return message.channel.send('L\'option ``-noreqs`` est réservée aux ``Administrateur Système`` d\'Edu-Focus.\nSi jamais vous êtes un ``Administrateurs Système``, merci de relier vorte compte discord a votre compte Edu-Focus pour faire fonctionner cette option');
+        if (mode === '-noreqs'){
+            if (await staffverif('system_main_admin', message.author.id) === true) return message.channel.send('L\'option ``-noreqs`` est réservée aux ``Administrateur Système`` d\'Edu-Focus.\nSi jamais vous êtes un ``Administrateurs Système``, merci de relier vorte compte discord a votre compte Edu-Focus pour faire fonctionner cette option');
+            restriction = false
         }
+
         const wait = message.channel.send('Demande d\'informations au serveur d\'Edu-Focus en cours');
         wait.then(function(message) {
             request({

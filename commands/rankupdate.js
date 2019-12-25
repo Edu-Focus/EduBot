@@ -76,7 +76,7 @@ exports.conf = {
     name: "rankupdate",
     aliases: [],
     help: {
-        category: "Utilitaire",
+        category: "Utilitaires",
         description: "Permet de syncroniser son grade sur le site Edu-Focus et le discord",
         usage: "EF!rankupdate {pseudo Edu-Focus}"
     }
