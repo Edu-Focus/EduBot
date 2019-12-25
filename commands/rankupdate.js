@@ -35,8 +35,6 @@ exports.run = async (client, message, args, key) => {
                         if(response.data.discord_id !== aut.author.id) return message.channel.send("Ce compte n'est pas lié avec ce profil discord...\n")
                         var rank = response.data.informations.rank
                         var asso = response.data.informations.flags.is_assoc_member
-                        message.channel.send(rank + " // " + asso)
-                        message.channel.send(gradesjs[rank])
                         aut.member.addRole(gradesjs[rank])
                         if(asso === true) aut.member.addRole('525019895000334351')
                     }
@@ -79,7 +77,7 @@ exports.conf = {
     aliases: [],
     help: {
         category: "Utilitaire",
-        description: "INDEV",
-        usage: "INDEV"
+        description: "Permet de syncroniser son grade sur le site Edu-Focus et le discord",
+        usage: "EF!rankupdate {pseudo Edu-Focus}"
     }
 };

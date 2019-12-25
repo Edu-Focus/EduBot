@@ -1,5 +1,6 @@
 const request = require('request-promise');
 const Discord = require("discord.js");
+const stafflist = require("../functions/stafflist.js")
 
 exports.run = async (client, message, args, key) => {
     if(args[0]) {
@@ -17,12 +18,10 @@ exports.run = async (client, message, args, key) => {
 
         var restriction = true
         if(mode === '-noreqs'){
-            await retreiveStaffList(key).then(function(list) {
+            await stafflist().then(function(list) {
                 for(let i = 0; i<list.length; i++){
                     let id = list[i].misc.discord_id;
-                    console.log(id === message.author.id.trim() && list[i].profile.rank === "system_main_admin")
-                    if(typeof id === "string") id = id.trim();
-                    if(id === message.author.id.trim() && list[i].profile.rank === "system_main_admin"){
+                    if(id === message.author.id && list[i].profile.rank === "system_main_admin"){
                         restriction = false;
                         return;
                     }
@@ -122,17 +121,38 @@ exports.run = async (client, message, args, key) => {
 
                                 if(data.authorization_level > 2) {
                                     if(infos.classroom) {
+                                        var classroom = ''
                                         var level = infos.classroom;
-                                        var classroom = (level == '-2' ? 'Autre' :
-                                            (level == '-1' ? 'Personnel d\'établissement' :
-                                                (level == '0' ? 'Terminale' :
-                                                    (level == '1' ? 'Première' :
-                                                        (level == '2' ? 'Seconde' :
-                                                            (level == '3' ? 'Troisième' :
-                                                                (level == '4' ? 'Quatrième' :
-                                                                    (level == '5' ? 'Cinquième' :
-                                                                        (level == '6' ? 'Sixième' : 'Enseignement primaire'
-                                                                        )))))))));
+                                        switch(level){
+                                            case '-2':
+                                                classroom = 'Autre'
+                                                break;
+                                            case '-1':
+                                                classroom = 'Personnel d\'établissement'
+                                                break;
+                                            case '-0':
+                                                classroom = 'Terminale'
+                                                break;
+                                            case '1':
+                                                classroom = 'Première'
+                                                break;
+                                            case '2':
+                                                classroom = 'Seconde'
+                                                break;
+                                            case '3':
+                                                classroom = 'Troisième'
+                                                break;
+                                            case '4':
+                                                classroom = 'Quatrième'
+                                                break;
+                                            case '5':
+                                                classroom = 'Cinquième'
+                                                break;
+                                            case '6':
+                                                classroom = 'Sixième'
+                                                break;
+                                        }
+                                        if(classroom === '') classroom = 'Enseignement primaire'
                                     }
                                 }
                             }
@@ -473,65 +493,6 @@ exports.run = async (client, message, args, key) => {
     }else{
         message.channel.send(`Désolé ${message.author} mais vous avez oublié d'ajouter le pseudonyme de la personne à chercher dans la base de donnée d'Edu-Focus`);
     }
-    
-    function retreiveStaffList(key) {
-        return new Promise(function(resolve, reject) {
-            if (doRequest) {
-                request({
-                    uri: 'https://edu-focus.org/api/discord/staff',
-                    json: true,
-                    qs: {
-                        key: key,
-                    },
-                }).then(function(response) {
-    
-                    doRequest = false;
-                    fallbackOccurences = 0;
-                    setTimeout(function() {
-                        doRequest = true;
-                    }, 10000);
-    
-                    if (response.status === 'success') {
-                        staffList = response.data.staff_members;
-    
-                        resolve(staffList);
-                    }
-                    else if (staffList === null) {
-                        console.error('Error: The api refused to retrive data (reason: ' + response.message + '), unable to continue due to absence of cache.');
-                        reject('refused_then_no_cache');
-                    }
-                    else if (fallbackOccurences < 3) {
-                        console.warn('Warning: The api refused to retrive data (reason: ' + response.message + '), using cached datas to continue.');
-                        fallbackOccurences++;
-                        resolve(staffList);
-                    }
-                    else {
-                        console.error('Error: The api refused to retrive data (reason: ' + response.message + '), unable to continue due to outdated cache.');
-                        reject('refused_then_outdated_cache');
-                    }
-                }).catch(function(err) {
-                    if (staffList === null) {
-                        console.error('Error: Failed to retreive datas, unable to continue due to absence of cache.\n', err);
-                        reject('fail_then_no_cache');
-                    }
-                    else if (fallbackOccurences < 3) {
-                        console.warn('Warning: Failed to retreive datas, using cached datas to continue.');
-                        fallbackOccurences++;
-                        resolve(staffList);
-                    }
-                    else {
-                        console.error('Error: Failed to retreive datas, unable to continue due to outdated cache.');
-                        reject('fail_then_outdated_cache');
-                    }
-                });
-            }
-            else {
-                resolve(staffList);
-                return;
-            }
-        });
-    }
-
 }
 
 exports.conf = {
