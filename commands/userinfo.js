@@ -6,7 +6,8 @@ exports.run = async (client, message, args, key) => {
         const personn = args[0];
 
         if(!/^[A-Za-z0-9_-sáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{4,40}$/.test(personn)) {
-            return message.channel.send(`La recherche \`${args[0]}\` ne peut être effectuée car elle contient des caractères invalides et/ou est trop courte.`)
+            var reply = message.cleanContent.split('EF$rankupdate ').join('')
+            return message.channel.send(`La recherche \`${reply}\` ne peut être effectuée car elle contient des caractères invalides et/ou est trop courte.`)
                 .catch(function(err) {
                     return message.channel.send(`Ouah ! 2 Erreurs en même temps !\n\nLa première :\nLa recherche ne peut être effectuée car elle contient des caractères invalides et/ou est trop courte.\n\nLa Seconde :\n${err}`);
                 });
