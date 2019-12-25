@@ -1,6 +1,10 @@
+const fs = require('fs');
+const ignore_users = JSON.parse(fs.readFileSync("./config/ignore_users.json", "utf8"));
+
 module.exports = (client) => {
     client.on('message', async message => {
         if (message.author.bot) return;
+        if (ignore_users[message.author.id]) return /*message.channel.send('NOP')*/;
         if (message.content.indexOf(client.config.defaultSettings.prefix) !== 0) return;
 
         const args = message.content.slice(client.config.defaultSettings.prefix.length).trim().split(/ +/g);
