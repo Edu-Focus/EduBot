@@ -1,7 +1,7 @@
 const request = require('request-promise');
 const Discord = require("discord.js");
 const fs = require('fs');
-const gradesjs = JSON.parse(fs.readFileSync('./rankconfig.json', 'utf8'));
+const gradesjs = JSON.parse(fs.readFileSync('./config/rankconfig.json', 'utf8'));
 
 exports.run = async (client, message, args, key) => {
     if(args[0]) {

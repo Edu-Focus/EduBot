@@ -5,7 +5,7 @@ let fallbackOccurences = 0;
 let doRequest = true;
 
 module.exports = (client) => {
-    const key = require('../config.js').api_key
+    const key = require('../config/config.js').api_key
 
     return new Promise(function(resolve, reject) {
     if (doRequest) {
