@@ -18,15 +18,17 @@ exports.run = async (client, message, args, key) => {
         return message.channel.send('Une raison doit être fournie...')
     }
     //message.channel.send(3)
-    if(await staffverif('system_main-administrator', message.author.id) === true) return message.channel.send("Cette commande est réservée aux ``Administrateurs Système`` d'Edu-Focus")
-
+    if(await staffverif('system_main_admin', message.author.id) === true) {
+        return message.channel.send("Cette commande est réservée aux ``Administrateurs Système`` d'Edu-Focus")
+    }
+    
     if(await staffverif('system_main_admin', mention.id) === true) return message.channel.send('Impossible de bannir l\'utilisateur mentionné')
 
     banbdd[mention.id] = {
         "username": mention.username,
         "id": mention.id,
-        "banni": "1",
-        "time": await dateFr(),
+        "banni": true,
+        "time": dateFr(),
         "reason": raison
     }
     //message.channel.send(4)

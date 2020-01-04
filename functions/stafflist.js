@@ -4,7 +4,7 @@ let staffList = null;
 let fallbackOccurences = 0;
 let doRequest = true;
 
-module.exports = async () => {
+module.exports = () => {
     const key = require('../config/config.js').api_key
 
     return new Promise(function(resolve, reject) {
