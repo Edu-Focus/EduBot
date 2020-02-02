@@ -1,12 +1,9 @@
 const config = {
-    "ownerID": "269156684155453451",
-    "admins": [],
-
-    "token": "...",
-    "api_key": "...",
+    "token": "YOUR TOKEN HERE",
+    "api_key": "YOUR PRIVATE EDU-FOCUS API KEY HERE",
 
     "defaultSettings": {
-        "prefix": "!EF ",
+        "prefix": "YOUR PREFIX HERE ",
     },
 };
 
