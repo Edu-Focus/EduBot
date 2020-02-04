@@ -8,21 +8,18 @@ exports.run = async (client, message, args, key) => {
     //message.channel.send(1)
     let mention = message.mentions.users.first();
     if(!mention) return message.channel.send('Tu as oublié de mentionner un utilisateur...')
-    if(mention.id === '498570647124049942' || mention.id === '498570647124049942') return message.channel.send("Je ne peux pas m'auto bannir...")
+    if(mention.id === '498570647124049942' || mention.id === '658363805985669140') return message.channel.send("Je ne peux pas m'auto bannir...")
     if(mention.id === message.author.id) return message.channel.send("Tu ne peux pas t'auto bannir...")
 
-    //message.channel.send(2)
     if(args[1]){
         var raison = message.content.split(' ').slice(2).join(' ')
     }else{
         return message.channel.send('Une raison doit être fournie...')
     }
-    //message.channel.send(3)
-    if(await staffverif('system_main_admin', message.author.id) === true) {
-        return message.channel.send("Cette commande est réservée aux ``Administrateurs Système`` d'Edu-Focus")
-    }
+
+    if(await staffverif('system_main_admin', message.author.id) === true) return message.channel.send("Cette commande est réservée aux ``Administrateurs Système`` d'Edu-Focus")
     
-    if(await staffverif('system_main_admin', mention.id) === true) return message.channel.send('Impossible de bannir l\'utilisateur mentionné')
+    if(await staffverif('system_main_admin', mention.id) === false) return message.channel.send('Impossible de bannir l\'utilisateur mentionné')
 
     banbdd[mention.id] = {
         "username": mention.username,
@@ -31,7 +28,6 @@ exports.run = async (client, message, args, key) => {
         "time": dateFr(),
         "reason": raison
     }
-    //message.channel.send(4)
     fs.writeFile("./config/ignore_users.json", JSON.stringify(banbdd, null, 4), (err) => {
         if(err) message.channel.send("Une erreur est survenue");
     });
