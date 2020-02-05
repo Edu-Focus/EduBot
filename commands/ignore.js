@@ -5,7 +5,6 @@ const staffverif = require("../functions/staffverif.js")
 let banbdd = JSON.parse(fs.readFileSync("./config/ignore_users.json", "utf8"));
 
 exports.run = async (client, message, args, key) => {
-    //message.channel.send(1)
     let mention = message.mentions.users.first();
     if(!mention) return message.channel.send('Tu as oublié de mentionner un utilisateur...')
     if(mention.id === '498570647124049942' || mention.id === '658363805985669140') return message.channel.send("Je ne peux pas m'auto bannir...")
@@ -32,7 +31,6 @@ exports.run = async (client, message, args, key) => {
         if(err) message.channel.send("Une erreur est survenue");
     });
     message.channel.send('Utilisateur blacklisté avec succès.')
-    //message.channel.send(5)
 };
 
 exports.conf = {

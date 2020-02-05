@@ -8,7 +8,7 @@ exports.conf = {
     name: "",
     aliases: [],
     help: {
-        category: "Utilitaires",
+        category: "",
         description: "",
         usage: "EF!"
     }
