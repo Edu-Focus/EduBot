@@ -28,3 +28,7 @@ const init = async () => {
 };
 
 init().then(() => console.log("\nEdu-Focus, tout le monde a le droit d\'apprendre !"));
+
+client.on("ready", () => {
+  client.user.setActivity(`Edu-Focus, tout le monde a le droit d\'apprendre !`);             
+});

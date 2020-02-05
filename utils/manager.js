@@ -18,8 +18,7 @@ module.exports = (client) => {
         }
     };
 
-    client.on('ready', async () => {
-        await client.user.setPresence('Edu-Focus, tout le monde a le droit d\'apprendre !');
+    client.on('ready', () => {
         console.log(client.commands.array().length + " commands loaded")
     });
 };
