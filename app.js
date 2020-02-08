@@ -5,7 +5,7 @@ const {promisify} = require("util");
 const readdir = promisify(require("fs").readdir);
 
 const client = new Discord.Client();
-client.config = require("./config.js");
+client.config = require("./config/config.js");
 
 require("./utils/manager")(client);
 require("./utils/process_commands")(client);
@@ -28,3 +28,7 @@ const init = async () => {
 };
 
 init().then(() => console.log("\nEdu-Focus, tout le monde a le droit d\'apprendre !"));
+
+client.on("ready", () => {
+  client.user.setActivity(`Edu-Focus, tout le monde a le droit d\'apprendre !`);             
+});

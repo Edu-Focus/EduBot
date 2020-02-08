@@ -1,0 +1,6 @@
+const key = require('../config/config.js').api_key
+const request = require('request-promise');
+
+module.exports = async (client) => {
+    
+}

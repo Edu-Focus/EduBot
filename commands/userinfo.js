@@ -1,6 +1,6 @@
 const request = require('request-promise');
 const Discord = require("discord.js");
-const stafflist = require("../functions/stafflist.js")
+const staffverif = require("../functions/staffverif.js")
 
 exports.run = async (client, message, args, key) => {
     if(args[0]) {
@@ -15,22 +15,12 @@ exports.run = async (client, message, args, key) => {
         }
 
         if(args[1]) var mode = args[1];
-
         var restriction = true
-        if(mode === '-noreqs'){
-            await stafflist().then(function(list) {
-                for(let i = 0; i<list.length; i++){
-                    let id = list[i].misc.discord_id;
-                    if(id === message.author.id && list[i].profile.rank === "system_main_admin"){
-                        restriction = false;
-                        return;
-                    }
-                }
-            })
-
-            // Message d'erreur noreqs xDD (Je le met ici prck fuck)
-            if(restriction === true) return message.channel.send('L\'option ``-noreqs`` est réservée aux ``Administrateur Système`` d\'Edu-Focus.\nSi jamais vous êtes un ``Administrateurs Système``, merci de relier vorte compte discord a votre compte Edu-Focus pour faire fonctionner cette option');
+        if (mode === '-noreqs'){
+            if (await staffverif('system_main_admin', message.author.id) === true) return message.channel.send('L\'option ``-noreqs`` est réservée aux ``Administrateur Système`` d\'Edu-Focus.\nSi jamais vous êtes un ``Administrateurs Système``, merci de relier vorte compte discord a votre compte Edu-Focus pour faire fonctionner cette option');
+            restriction = false
         }
+
         const wait = message.channel.send('Demande d\'informations au serveur d\'Edu-Focus en cours');
         wait.then(function(message) {
             request({
@@ -159,166 +149,55 @@ exports.run = async (client, message, args, key) => {
                         }
 
                         // Maintenant on peut commencer a construire notre embed
-                        var embed;
                         switch(restriction) {
                         case false:
                             // NOREQS
                             switch(data.authorization_level) {
                             case 0:
-                                embed = new Discord.RichEmbed({
-                                    'title': `Profil de ${personn} (noreqs)`,
-                                    'thumbnail': {
-                                        'url': `${infos.photo}?size=200`,
-                                    },
-                                    'color': `${color}`,
-                                    'fields': [
-                                        {
-                                            'name': 'Niveau de partage des données',
-                                            'value': 'Ne rien partager',
-                                        },
-                                        {
-                                            'name': 'Informations générales :',
-                                            'value': `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`,
-                                        },
-                                    ],
-                                });
-                                message.channel.send(embed);
+                                var embed = new Discord.RichEmbed()
+                                .setTitle(`Profil de ${personn} (noreqs)`)
+                                .setThumbnail(`${infos.photo}?size=200`)
+                                .setColor(color)
+                                .addField('Niveau de partage des données', 'Ne rien partager')
+                                .addField('Informations générales', `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`)
                                 break;
                             case 1:
-                                embed = new Discord.RichEmbed({
-                                    'title': `Profil de ${personn} (noreqs)`,
-                                    'thumbnail': {
-                                        'url': `${infos.photo}?size=200`,
-                                    },
-                                    'color': `${color}`,
-                                    'fields': [
-                                        {
-                                            'name': 'Niveau de partage des données',
-                                            'value': 'Uniquement le status du compte',
-                                            'inline': false,
-                                        },
-                                        {
-                                            'name': 'Informations générales :',
-                                            'value': `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n Email : ${infos.email}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Flags :',
-                                            'value': `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Divers :',
-                                            'value': `Compte vérifié : ${verified}\nControl parental : ${control}\nID du parent : ${parent}\nCGU acceptés : ${cgu}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Sanctions :',
-                                            'value': `Banni : ${ban}\nJusqu'a : ${time}\nRaison: ${reason}`,
-                                            'inline': true,
-                                        },
-                                    ],
-                                });
-                                message.channel.send(embed);
+                                var embed = new Discord.RichEmbed()
+                                .setTitle(`Profil de ${personn} (noreqs)`)
+                                .setThumbnail(`${infos.photo}?size=200`)
+                                .setColor(color)
+                                .addField('Niveau de partage des données', 'Uniquement le status du compte')
+                                .addField('Informations générales :', `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n Email : ${infos.email}`, true)
+                                .addField('Flags :', `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`, true)
+                                .addField('Divers :', `Compte vérifié : ${verified}\nControl parental : ${control}\nID du parent : ${parent}\nCGU acceptés : ${cgu}`, true)
+                                .addField('Sanctions :', `Banni : ${ban}\nJusqu'a : ${time}\nRaison: ${reason}`, true)
                                 break;
                             case 2:
-                                embed = new Discord.RichEmbed({
-                                    'title': `Profil de ${personn} (noreqs)`,
-                                    'thumbnail': {
-                                        'url': `${infos.photo}?size=200`,
-                                    },
-                                    'color': `${color}`,
-                                    'fields': [
-                                        {
-                                            'name': 'Niveau de partage des données',
-                                            'value': 'Uniquement le status du compte + Données annexes',
-                                            'inline': false,
-                                        },
-                                        {
-                                            'name': 'Informations générales :',
-                                            'value': `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n Email : ${infos.email}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Flags :',
-                                            'value': `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Divers :',
-                                            'value': `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nID du parent : ${parent}\nCGU acceptés : ${cgu}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Ecoles :',
-                                            'value': schoolsString,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Methodes de connection :',
-                                            'value': `Google : ${google}\nDiscord : ${discord}\nEntmip : ${entmip}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Sanctions :',
-                                            'value': `Banni : ${ban}\nJusqu'a : ${time}\nRaison: ${reason}`,
-                                            'inline': true,
-                                        },
-                                    ],
-                                });
-                                message.channel.send(embed);
+                                var embed = new Discord.RichEmbed()
+                                .setTitle(`Profil de ${personn} (noreqs)`)
+                                .setThumbnail(`${infos.photo}?size=200`)
+                                .setColor(color)
+                                .addField('Niveau de partage des données', 'Uniquement le status du compte + Données annexes')
+                                .addField('Informations générales :', `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n Email : ${infos.email}`, true)
+                                .addField('Flags :', `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`, true)
+                                .addField('Divers :', `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nID du parent : ${parent}\nCGU acceptés : ${cgu}`, true)
+                                .addField('Ecoles :', schoolsString, true)
+                                .addField('Methodes de connection :', `Google : ${google}\nDiscord : ${discord}\nEntmip : ${entmip}`, true)
+                                .addField('Sanctions :', `Banni : ${ban}\nJusqu'a : ${time}\nRaison: ${reason}`, true)
                                 break;
                             case 3:
-                                embed = new Discord.RichEmbed({
-                                    'title': `Profil de ${personn} (noreqs)`,
-                                    'thumbnail': {
-                                        'url': `${infos.photo}?size=200`,
-                                    },
-                                    'color': `${color}`,
-                                    'fields': [
-                                        {
-                                            'name': 'Niveau de partage des données',
-                                            'value': 'Toutes les données',
-                                            'inline': false,
-                                        },
-                                        {
-                                            'name': 'Informations générales :',
-                                            'value': `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n Email : ${infos.email}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Informations personnelles :',
-                                            'value': `Prénom : ${infos.first_name}\nNom : ${infos.last_name}\nDate de naissance : ${infos.birthday}\nNiveau scolaire : ${classroom}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Flags :',
-                                            'value': `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Divers :',
-                                            'value': `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nID du parent : ${parent}\nCGU acceptés : ${cgu}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Etablissements scolaires :',
-                                            'value': schoolsString,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Methodes de connection :',
-                                            'value': `Google : ${google}\nDiscord : ${discord}\nEntmip : ${entmip}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Sanctions :',
-                                            'value': `Banni : ${ban}\nJusqu'a : ${time}\nRaison: ${reason}`,
-                                            'inline': true,
-                                        },
-                                    ],
-                                });
-                                message.channel.send(embed);
+                                var embed = new Discord.RichEmbed()
+                                .setTitle(`Profil de ${personn} (noreqs)`)
+                                .setThumbnail(`${infos.photo}?size=200`)
+                                .setColor(color)
+                                .addField('Niveau de partage des données', 'Toutes les données')
+                                .addField('Informations générales :', `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n Email : ${infos.email}`, true)
+                                .addField('Informations personelles :', `Prénom : ${infos.first_name}\nNom : ${infos.last_name}\nDate de naissance : ${infos.birthday}\nNiveau scolaire : ${classroom}`, true)
+                                .addField('Flags :', `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`, true)
+                                .addField('Divers :', `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nID du parent : ${parent}\nCGU acceptés : ${cgu}`, true)
+                                .addField('Ecoles :', schoolsString, true)
+                                .addField('Methodes de connection :', `Google : ${google}\nDiscord : ${discord}\nEntmip : ${entmip}`, true)
+                                .addField('Sanctions :', `Banni : ${ban}\nJusqu'a : ${time}\nRaison: ${reason}`, true)
                                 break;
                             }
                             break;
@@ -326,139 +205,50 @@ exports.run = async (client, message, args, key) => {
                             // Public mode
                             switch(response.data.authorization_level) {
                             case 0:
-                                embed = new Discord.RichEmbed({
-                                    'title': `Profil de ${personn}`,
-                                    'thumbnail': {
-                                        'url': `${infos.photo}`,
-                                    },
-                                    'color': `${color}`,
-                                    'fields': [
-                                        {
-                                            'name': 'Niveau de partage des données',
-                                            'value': 'Ne rien partager',
-                                        },
-                                        {
-                                            'name': 'Informations générales :',
-                                            'value': `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`,
-                                        },
-                                    ],
-                                });
-                                message.channel.send(embed);
+                                var embed = new Discord.RichEmbed()
+                                .setTitle(`Profil de ${personn}`)
+                                .setThumbnail(`${infos.photo}?size=200`)
+                                .setColor(color)
+                                .addField('Niveau de partage des données', 'Ne rien partager')
+                                .addField('Informations générales', `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`)
                                 break;
                             case 1:
-                                embed = new Discord.RichEmbed({
-                                    'title': `Résultats de recherche pour : ${personn}`,
-                                    'thumbnail': {
-                                        'url': `${infos.photo}?size=200`,
-                                    },
-                                    'color': `${color}`,
-                                    'fields': [
-                                        {
-                                            'name': 'Niveau de partage des données',
-                                            'value': 'Uniquement le status du compte',
-                                            'inline': false,
-                                        },
-                                        {
-                                            'name': 'Informations générales :',
-                                            'value': `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}\n`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Flags :',
-                                            'value': `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Divers :',
-                                            'value': `Compte vérifié : ${verified}\nControl parental : ${control}\nCGU acceptés : ${cgu}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Sanctions :',
-                                            'value': `Banni : ${ban}`,
-                                            'inline': true,
-                                        },
-                                    ],
-                                });
-                                message.channel.send(embed);
+                                var embed = new Discord.RichEmbed()
+                                .setTitle(`Profil de ${personn}`)
+                                .setThumbnail(`${infos.photo}?size=200`)
+                                .setColor(color)
+                                .addField('Niveau de partage des données', 'Uniquement le status du compte')
+                                .addField('Informations générales :', `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`, true)
+                                .addField('Flags :', `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`, true)
+                                .addField('Divers :', `Compte vérifié : ${verified}\nControl parental : ${control}\nCGU acceptés : ${cgu}`, true)
+                                .addField('Sanctions :', `Banni : ${ban}`, true)
                                 break;
                             case 2:
-                                embed = new Discord.RichEmbed({
-                                    'title': `Résultats de recherche pour : ${personn}`,
-                                    'thumbnail': {
-                                        'url': `${infos.photo}?size=200`,
-                                    },
-                                    'color': `${color}`,
-                                    'fields': [
-                                        {
-                                            'name': 'Niveau de partage des données',
-                                            'value': 'Uniquement le status du compte + Données annexes',
-                                            'inline': false,
-                                        },
-                                        {
-                                            'name': 'Informations générales :',
-                                            'value': `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Flags :',
-                                            'value': `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Divers :',
-                                            'value': `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nCGU acceptés : ${cgu}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Sanctions :',
-                                            'value': `Banni : ${ban}`,
-                                            'inline': true,
-                                        },
-                                    ],
-                                });
-                                message.channel.send(embed);
+                                var embed = new Discord.RichEmbed()
+                                .setTitle(`Profil de ${personn}`)
+                                .setThumbnail(`${infos.photo}?size=200`)
+                                .setColor(color)
+                                .addField('Niveau de partage des données', 'Uniquement le status du compte + Données annexes')
+                                .addField('Informations générales :', `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`, true)
+                                .addField('Flags :', `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`, true)
+                                .addField('Divers :', `Compte vérifié : ${verified}\nControl parental : ${control}\nCGU acceptés : ${cgu}`, true)
+                                .addField('Sanctions :', `Banni : ${ban}`, true)
                                 break;
                             case 3:
-                                embed = new Discord.RichEmbed({
-                                    'title': `Résultats de recherche pour : ${personn}`,
-                                    'thumbnail': {
-                                        'url': `${infos.photo}?size=200`,
-                                    },
-                                    'color': `${color}`,
-                                    'fields': [
-                                        {
-                                            'name': 'Niveau de partage des données',
-                                            'value': 'Toutes les données',
-                                            'inline': false,
-                                        },
-                                        {
-                                            'name': 'Informations générales :',
-                                            'value': `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Flags :',
-                                            'value': `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Divers :',
-                                            'value': `Compte vérifié : ${verified}\nA2F : ${adf}\nControl parental : ${control}\nCGU acceptés : ${cgu}`,
-                                            'inline': true,
-                                        },
-                                        {
-                                            'name': 'Sanctions :',
-                                            'value': `Banni : ${ban}`,
-                                            'inline': true,
-                                        },
-                                    ],
-                                });
-                                message.channel.send(embed);
+                                var embed = new Discord.RichEmbed()
+                                .setTitle(`Profil de ${personn}`)
+                                .setThumbnail(`${infos.photo}?size=200`)
+                                .setColor(color)
+                                .addField('Niveau de partage des données', 'Toutes les données')
+                                .addField('Informations générales :', `ID : ${infos.id}\nPseudonyme : ${infos.username}\nRang : ${rank}`, true)
+                                .addField('Flags :', `Membre de l'association : ${assos_member}\nBug Hunter : ${bug_hunter}\nMembre premium : ${premium}`, true)
+                                .addField('Divers :', `Compte vérifié : ${verified}\nControl parental : ${control}\nCGU acceptés : ${cgu}`, true)
+                                .addField('Sanctions :', `Banni : ${ban}`, true)
                                 break;
                             }
                             break;
                         }
+                        message.channel.send(embed);
 
                     }
                     else if(response.message === 'no user found') {

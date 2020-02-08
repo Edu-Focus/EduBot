@@ -4,8 +4,8 @@ let staffList = null;
 let fallbackOccurences = 0;
 let doRequest = true;
 
-module.exports = (client) => {
-    const key = require('../config.js').api_key
+module.exports = () => {
+    const key = require('../config/config.js').api_key
 
     return new Promise(function(resolve, reject) {
     if (doRequest) {
