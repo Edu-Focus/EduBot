@@ -85,3 +85,39 @@ Maintenant, il suffit d'ouvrir le dossier config, de  et de remplir tous les fic
 
 #### 2.4 Finalisation 
 Maintenant il ne reste plus qu'a héberger votre bot discord pour qu'il puisse fonctionner jour et nuit
+
+## Contribution au développement
+Pour contribuer au développement du bot, vous avez la possibilitée de fork le repository pour pouvoir y ajouter des fonctionalitées puis demander une pull request.
+
+Pour que l'on puisse suivre sans trop de problèmes les avancements du bot nous demandons une mise en forme du nom des commit particulière :
+
+```
+<type> : <Nom du commit>
+[ligne vide]
+<Fichiers impactés>
+<Description>
+
+* Types
+| Préfixe | Sinification |
+|--|--|
+| MAJ | Mise a jour du fichier, aucune création/suppression |
+| NEW | Création d'un ou plusieurs fichiers (a préciser dans la description) |
+| SUPPR (ou DEL) | Supression d'un ou plusieurs fichiers (a préciser dans la description) |
+
+* Nom du commit
+
+Nous n'avons pas trop d'attentes sur le nom du commit, nous demandons juste qu'il soit assez explicite
+
+* Fichiers impactés
+
+Pour cette partie nous demandons un peu plus de rédaction car nous demandons que le chemin du fichier soit écrit en clair, par exemple : **./commands/ping.js**
+
+* Description
+
+Pour la description nous demandons juste un résumé rapide des modifications apportés aux fichiers impactés, par  exmemple : 'Ajout de la partie "Contribution au développement" et rédaction de cette dernière'
+
+Si jamais vous avez besoin d'aide, hésitez pas a nous contacter :
+Via une issue sur le repo,
+Par discord : https://discord.gg/9FqeV6a
+Ou par e-mail : marc@edu-focus.org
+
