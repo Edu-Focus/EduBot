@@ -1,6 +1,7 @@
 const config = {
     "token": "YOUR TOKEN HERE",
     "api_key": "YOUR PRIVATE EDU-FOCUS API KEY HERE",
+    "version": "v0.4"
 
     "defaultSettings": {
         "prefix": "YOUR PREFIX HERE ",
