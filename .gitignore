@@ -3,8 +3,9 @@ config/rankconfig.json
 config/config.js
 config/ignore_users.json
 
-##On met les autres trucs inutiles
+## On met les autres trucs inutiles
 commands/command.js.example
 package-lock.json
 node_modules
 .idea
+.vscode/
