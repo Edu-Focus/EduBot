@@ -96,8 +96,10 @@ Pour que l'on puisse suivre sans trop de problèmes les avancements du bot nous 
 [ligne vide]
 <Fichiers impactés>
 <Description>
+```
 
 * Types
+
 | Préfixe | Sinification |
 |--|--|
 | MAJ | Mise a jour du fichier, aucune création/suppression |
