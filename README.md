@@ -3,6 +3,11 @@
 
 # EduBot 
 
+# Note importante :
+
+Le projet n'est plus maintenu depuis un long moment et ne sera plus mis a jour par les développeurs
+Ce projet est obsolète et n'est absolument pas a jout, il ne doit donc pas être pris comme base ou exemple pour d'aurtes projets
+
 ## Présentation
 
   
